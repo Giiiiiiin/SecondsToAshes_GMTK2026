@@ -22,7 +22,7 @@ public class PlayerAnimations : MonoBehaviour
 
     private void Start()
     {
-        animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
+        animationHandler.Play(PlayerAnimMovement.PlayerIdle_SE);
     }
 
     void Update()
@@ -47,9 +47,9 @@ public class PlayerAnimations : MonoBehaviour
         if (playerMovement.isMelee)
         {
             if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_SW);
+                animationHandler.Play(PlayerAnimMovement.PlayerMelee_SE);
             else
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_NE);
+                animationHandler.Play(PlayerAnimMovement.PlayerMelee_NW);
 
             return;
         }
@@ -57,17 +57,17 @@ public class PlayerAnimations : MonoBehaviour
         if (playerMovement.isMoving)
         {
             if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_SW);
+                animationHandler.Play(PlayerAnimMovement.PlayerMove_SE);
             else
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_NE);
+                animationHandler.Play(PlayerAnimMovement.PlayerMove_NW);
 
             return;
         }
 
         if (mouseDir.x > 0)
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
+            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SE);
         else
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_NE);
+            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
     }
 
     public void Melee(float seconds)
