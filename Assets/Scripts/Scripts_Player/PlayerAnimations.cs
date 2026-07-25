@@ -107,8 +107,6 @@ public class PlayerAnimations : MonoBehaviour
                     attackObject.sourceUnit = playerData;
             }
         }
-
-        playerData.AddCooldown();
     }
 
     public void end_MeleeCombo_1()

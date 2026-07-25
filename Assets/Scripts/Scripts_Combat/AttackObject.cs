@@ -5,12 +5,14 @@ public class AttackObject : MonoBehaviour
     public CombatBase sourceUnit;
 
     private Collider2D _collider;
+    private Rigidbody2D _rigidbody;
 
     private void Awake()
     {
         Debug.Log("AttackObject SourceUnit Awake: " + sourceUnit);
 
         _collider = GetComponent<Collider2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Start()

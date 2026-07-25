@@ -8,7 +8,6 @@ public class CombatBase : MonoBehaviour
     [SerializeField] protected CombatUnit_ScriptableObject combatData;
     [SerializeField] protected List<GameObject> inventory;
 
-    public float currentHitPoints;
     public GameObject Source => gameObject;
     public CombatWeapon_ScriptableObject equippedWeapon;
     protected float attackCooldown = 0f;
@@ -27,6 +26,7 @@ public class CombatBase : MonoBehaviour
         get => equippedWeapon;
         set => equippedWeapon = value;
     }
+
     protected virtual void Awake()
     {
         combatData = Instantiate(combatData);
@@ -38,7 +38,6 @@ public class CombatBase : MonoBehaviour
 
     private void Start()
     {
-        currentHitPoints = combatData.hitPoints;
         Debug.Log("Unit DATA: " + UnitData.Source);
         Debug.Log("Unit WEAPON: " + equippedWeapon);
     }
@@ -61,10 +60,8 @@ public class CombatBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        Debug.Log("CombatBase Update: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
         if (attackCooldown > 0f)
         {
-            Debug.Log("AttackCooldown: " + attackCooldown);
             attackCooldown -= Time.deltaTime;
 
             if (attackCooldown <= 0f)
@@ -72,11 +69,6 @@ public class CombatBase : MonoBehaviour
         }
     }
 
-    public void AddCooldown()
-    {
-        float addCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
-        attackCooldown += addCooldown;
-    }
     public void EquipWeapon (string weaponName)
     {
         Weapon = SearchInventoryWeapon(weaponName);
@@ -84,7 +76,14 @@ public class CombatBase : MonoBehaviour
 
     public virtual void Attack()
     {
-        Debug.Log("CombatBase Attack: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
+        if (attackCooldown > 0f)
+        {
+            Debug.Log("Attack is on Cooldown");
+            return;
+        }
+
+        float addCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
+        attackCooldown += addCooldown;
 
         // Base function that is called by all Units to Attack
     }

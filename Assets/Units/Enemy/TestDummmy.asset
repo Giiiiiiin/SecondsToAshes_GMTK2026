@@ -19,4 +19,4 @@ MonoBehaviour:
   attackDamage: 1
   attackSpeed: 1
   hitPoints: 3
-  unitSpeed: 3
+  unitSpeed: 0
