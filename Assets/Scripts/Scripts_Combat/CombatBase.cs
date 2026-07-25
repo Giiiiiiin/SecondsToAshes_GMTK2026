@@ -8,6 +8,7 @@ public class CombatBase : MonoBehaviour
     [SerializeField] protected CombatUnit_ScriptableObject combatData;
     [SerializeField] protected List<GameObject> inventory;
 
+    public float currentHitPoints;
     public GameObject Source => gameObject;
     public CombatWeapon_ScriptableObject equippedWeapon;
     protected float attackCooldown = 0f;
@@ -38,6 +39,8 @@ public class CombatBase : MonoBehaviour
 
     private void Start()
     {
+        currentHitPoints = combatData.hitPoints;
+
         Debug.Log("Unit DATA: " + UnitData.Source);
         Debug.Log("Unit WEAPON: " + equippedWeapon);
     }
@@ -67,6 +70,12 @@ public class CombatBase : MonoBehaviour
             if (attackCooldown <= 0f)
                 attackCooldown = 0f;
         }
+    }
+
+    public void AddCooldown()
+    {
+        float addCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
+        attackCooldown += addCooldown;
     }
 
     public void EquipWeapon (string weaponName)
