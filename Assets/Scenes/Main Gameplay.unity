@@ -17272,7 +17272,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 8.5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -17320,9 +17320,9 @@ MonoBehaviour:
   equippedWeapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
   playerAnimation: {fileID: 2125507438}
   gunWifeAnimation: {fileID: 342453957}
-  _moveSpeed: 5
-  _dodgeSpeedMod: 8
-  _sprintSpeedMod: 8
+  playerCombat: {fileID: 0}
+  _dodgeSpeedMod: 30
+  _sprintSpeedMod: 40
   _attackSpeed: 5
   attackBuffer: 0
 --- !u!61 &1890353277
@@ -17545,7 +17545,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1912053480
 Transform:
@@ -18550,12 +18550,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 06ba8cea026a7af4fa89dd13e3ba11ac, type: 3}
+  m_Sprite: {fileID: -5696449865914679075, guid: 4f7d844b3e056e2478a2697cf11cbe24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.59375, y: 0.90625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

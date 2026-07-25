@@ -18,7 +18,5 @@ MonoBehaviour:
   UnitSerialNumber: 000
   attackDamage: 5
   attackSpeed: 0.5
-  armorDefense: 5
-  armorPenetration: 1
   hitPoints: 3
-  unitSpeed: 3
+  unitSpeed: 35
