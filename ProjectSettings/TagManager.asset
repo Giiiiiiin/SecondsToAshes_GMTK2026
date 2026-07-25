@@ -62,5 +62,8 @@ TagManager:
   - name: Decor
     uniqueID: 99295075
     locked: 0
+  - name: UI
+    uniqueID: 2827689495
+    locked: 0
   m_RenderingLayers:
   - Default

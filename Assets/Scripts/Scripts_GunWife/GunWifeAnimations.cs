@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,16 +17,20 @@ public class GunWifeAnimations : MonoBehaviour
     {
         animationHandler = GetComponent<AnimationHandler>();
     }
+    private void OnEnable()
+    {
+        Player_DataHandler.ShootGun.AddListener(Shoot);
+    }
+    
+    private void OnDisable()
+    {
+        Player_DataHandler.ShootGun.RemoveListener(Shoot);
+    }
 
     void Update()
     {
-        mouseScreenPos = Mouse.current.position.value;
-        mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-
-        mouseDir = new Vector2(
-            mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y);
-
+        GetMouseDir();
+        
         if (mouseDir.x >= 0 && mouseDir.y >= 0)
             animationHandler.Play(GunAnimMovement.GunWife_Idle_NE);
         else if (mouseDir.x >= 0 && mouseDir.y < 0)
@@ -35,9 +40,31 @@ public class GunWifeAnimations : MonoBehaviour
         else if ((mouseDir.x < 0 && mouseDir.y >= 0))
             animationHandler.Play(GunAnimMovement.GunWife_Idle_NW);
     }
-
-    public void Shoot(float seconds)
+  
+    public void Shoot()
     {
-      //Removed Cooldown logic, it shouldnt be here
+        GetMouseDir();
+        
+        if (mouseDir.x >= 0 && mouseDir.y >= 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_NE);
+        else if (mouseDir.x >= 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_SE);
+        else if (mouseDir.x < 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_SW);
+        else if ((mouseDir.x < 0 && mouseDir.y >= 0))
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_NW);
     }
+    
+    public void GetMouseDir()
+    {
+        mouseScreenPos = Mouse.current.position.value;
+        mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+        mouseDir = new Vector2(
+            mousePosition.x - transform.position.x,
+            mousePosition.y - transform.position.y);
+    }
+
+    public void OnEndShootAnim() => playerDataHandler.EndShoot();
+
 }

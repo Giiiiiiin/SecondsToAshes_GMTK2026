@@ -17,7 +17,6 @@ public class PlayerAnimations : MonoBehaviour
     void Awake()
     {
         cooldownMelee = 0;
-
         animationHandler = GetComponent<AnimationHandler>();
     }
 

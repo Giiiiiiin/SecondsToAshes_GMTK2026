@@ -1,18 +1,21 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 public class Player_DataHandler : CombatBase
 {
     [SerializeField] private PlayerAnimations playerAnimation;
-    [SerializeField] private GunWifeAnimations gunWifeAnimation;
+    // [SerializeField] private GunWifeAnimations gunWifeAnimation;
 
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _dodgeSpeedMod = 8f;
     [SerializeField] private float _sprintSpeedMod = 8f;
-    [SerializeField] private float _attackSpeed = 5f; 
+    [SerializeField] private float _attackSpeed = 5f;
+
+    public static UnityEvent ShootGun = new UnityEvent();
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -152,6 +155,7 @@ private void OnEnable()
             if (cooldownShoot <= 0f)
             {
                 cooldownShoot = 0f;
+                _canShoot = true;
                 _isShooting = false;
             }
         }
@@ -232,20 +236,24 @@ private void OnEnable()
 
     private void TryShoot()
     {
-        if (!canShoot || isShooting|| cooldownShoot > 0f || cooldownSwitch > 0f)
+        if (!canShoot || isShooting || cooldownShoot > 0f || cooldownSwitch > 0f)
         {
             Debug.Log("Cannot Shoot Instance!");
-
             return;
         }
 
         Debug.Log("Shot!");
+        ShootGun.Invoke();
+        
         _isShooting = true;
-
         cooldownShoot += baseCooldown;
         cooldownSwitch = baseCooldown / 2;
+    }
 
-        gunWifeAnimation.Shoot(cooldownShoot);
+    public void EndShoot()
+    {
+        _isShooting = false;
+        _canShoot = false;
     }
 
     private void TryMelee()
@@ -264,5 +272,11 @@ private void OnEnable()
         cooldownSwitch = baseCooldown / 2;
 
         playerAnimation.Melee(cooldownMelee);
+    }
+    
+    public void EndMelee()
+    {
+        _isMelee = false;
+        _canMelee = true;
     }
 }
