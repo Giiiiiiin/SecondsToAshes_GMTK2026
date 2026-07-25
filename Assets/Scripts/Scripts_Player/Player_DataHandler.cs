@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
-public class PlayerMovement : MonoBehaviour
+public class Player_DataHandler : CombatBase
 {
     [SerializeField] private PlayerAnimations playerAnimation;
     [SerializeField] private GunWifeAnimations gunWifeAnimation;
@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _dodgeSpeedMod = 8f;
     [SerializeField] private float _sprintSpeedMod = 8f;
-    [SerializeField] private float _attackSpeed = 5f;
+    [SerializeField] private float _attackSpeed = 5f; 
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -106,20 +106,6 @@ public class PlayerMovement : MonoBehaviour
         get { return _canShoot; }
     }
 
-    //========================
-    //      GET_StatValues
-    //========================
-
-    public float moveSpeed
-    {
-        get { return _moveSpeed; }
-    }
-
-    public float attackSpeed
-    {
-        get { return _attackSpeed; }
-    }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -127,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         if (rb == null) rb = new Rigidbody2D();
         if (gameInput == null) gameInput = new InputSystem_Action();
 
-        baseCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(_attackSpeed, 0.1f));
+        baseCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
         _canMove = true;
         _canDash = true;
         _canDodge = true;
@@ -204,11 +190,13 @@ private void OnEnable()
 
         if (movement.magnitude > 1f)
             movement.Normalize();
-    
-        if (canMove && movement != Vector2.zero && moveSpeed != 0f)
+
+        if (canMove && movement != Vector2.zero && combatData.unitSpeed != 0f)
         {
             _isMoving = true;
-            velocity = movement * moveSpeed;
+
+            velocity = movement * combatData.unitSpeed;
+            rb.linearVelocity = velocity; 
         }
         else
         {
@@ -219,12 +207,12 @@ private void OnEnable()
         if (canDodge && dodgeInput > 0f)
         {
             _isDodging = true;
-            velocity = movement * (moveSpeed + _dodgeSpeedMod);
+            velocity = movement * (combatData.unitSpeed + _dodgeSpeedMod);
         }
         else if (canSprint && sprintInput > 0f)
         {
             _canSprint = true;
-            velocity = movement * (moveSpeed + _sprintSpeedMod);
+            velocity = movement * (combatData.unitSpeed + _sprintSpeedMod);
         } 
         
         rb.linearVelocity = velocity;

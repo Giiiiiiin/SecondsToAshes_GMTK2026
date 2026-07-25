@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CombatBase : MonoBehaviour
 {
-    [SerializeField] private CombatUnit_ScriptableObject combatData;
-    [SerializeField] private List<GameObject> inventory;
+    [SerializeField] protected CombatUnit_ScriptableObject combatData;
+    [SerializeField] protected List<GameObject> inventory;
 
     public GameObject Source => gameObject;
-    [SerializeField] private CombatWeapon_ScriptableObject equippedWeapon;
+    public CombatWeapon_ScriptableObject equippedWeapon;
 
     public CombatUnit_ScriptableObject UnitData
     {
@@ -59,5 +60,20 @@ public class CombatBase : MonoBehaviour
     public void EquipWeapon (string weaponName)
     {
         Weapon = SearchInventoryWeapon(weaponName);
+    }
+
+    public virtual void Attack()
+    {
+        // Base function that is called by all Units to Attack
+    }
+
+    public virtual void OnHit()
+    {
+        // Base function that is called by all Units if thir Attacks hit a valid target
+    }
+
+    public virtual void OnDamage()
+    {
+        // Base function that is called by all Units if they are Damaged by an Attack
     }
 }
