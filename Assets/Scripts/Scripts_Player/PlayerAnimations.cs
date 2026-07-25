@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private GameObject playerObject;
     private AnimationHandler animationHandler;
 
     Vector2 mouseScreenPos;
@@ -22,7 +23,7 @@ public class PlayerAnimations : MonoBehaviour
 
     private void Start()
     {
-        animationHandler.Play(PlayerAnimMovement.PlayerIdle_SE);
+        animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
     }
 
     void Update()
@@ -33,41 +34,52 @@ public class PlayerAnimations : MonoBehaviour
         mouseDir = new Vector2(
             mousePosition.x - transform.position.x,
             mousePosition.y - transform.position.y);
-
+        
+        //this should prolly be moved in playermovement and just reference it here
         if (cooldownMelee > 0f)
         {
             cooldownMelee -= Time.deltaTime;
-
+        
             if (cooldownMelee <= 0f)
             {
                 cooldownMelee = 0f;
             }
         }
-
+        
         if (playerMovement.isMelee)
         {
             if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_SE);
+                animationHandler.Play(PlayerAnimMovement.PlayerMelee_E);
             else
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_NW);
-
+                animationHandler.Play(PlayerAnimMovement.PlayerMelee_W);
+        
             return;
         }
-
+        
         if (playerMovement.isMoving)
         {
             if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_SE);
+                animationHandler.Play(PlayerAnimMovement.PlayerMove_E);
             else
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_NW);
-
+                animationHandler.Play(PlayerAnimMovement.PlayerMove_W);
+        
             return;
         }
-
+        
+        if (playerMovement.isDodging || playerMovement.isSprinting)
+        {
+            if (mouseDir.x > 0)
+                animationHandler.Play(PlayerAnimMovement.PlayerSprint_E);
+            else
+                animationHandler.Play(PlayerAnimMovement.PlayerSprint_W);
+        
+            return;
+        }
+        
         if (mouseDir.x > 0)
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SE);
+            animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
         else
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
+            animationHandler.Play(PlayerAnimMovement.PlayerIdle_W);
     }
 
     public void Melee(float seconds)

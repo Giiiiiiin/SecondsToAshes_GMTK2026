@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GunWifeAnimations gunWifeAnimation;
 
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _dodgeSpeedMod = 8f;
+    [SerializeField] private float _sprintSpeedMod = 8f;
     [SerializeField] private float _attackSpeed = 5f;
 
     private InputSystem_Action gameInput;
@@ -19,12 +21,14 @@ public class PlayerMovement : MonoBehaviour
     private bool _isMoving = false;
     private bool _isDashing = false;
     private bool _isDodging = false;
+    private bool _isSprinting = false;
     private bool _isMelee = false;
     private bool _isShooting = false;
 
     private bool _canMove = false;
     private bool _canDash = false;
     private bool _canDodge = false;
+    private bool _canSprint = false;
     private bool _canMelee = false;
     private bool _canShoot = false;
 
@@ -62,6 +66,11 @@ public class PlayerMovement : MonoBehaviour
     {
         get { return _isShooting; }
     }
+    
+    public bool isSprinting
+    {
+        get { return _isSprinting; }
+    }
 
     //========================
     //      GET_CanStatus
@@ -80,6 +89,11 @@ public class PlayerMovement : MonoBehaviour
     public bool canDodge
     {
         get { return _canDodge; }
+    }
+    
+    public bool canSprint
+    {
+        get { return _canSprint; }
     }
 
     public bool canMelee
@@ -117,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
         _canMove = true;
         _canDash = true;
         _canDodge = true;
+        _canSprint = true;
         _canMelee = true;
         _canShoot = true;
     }
@@ -181,24 +196,39 @@ private void OnEnable()
     private void InputMovement()
     {
         moveInput = gameInput.Player.Move.ReadValue<Vector2>();
+        var dodgeInput = gameInput.Player.Dodge.ReadValue<float>();
+        var sprintInput = gameInput.Player.Sprint.ReadValue<float>();
+        
         Vector2 movement = moveInput.normalized;
+        Vector2 velocity = Vector2.zero;
 
         if (movement.magnitude > 1f)
             movement.Normalize();
-
+    
         if (canMove && movement != Vector2.zero && moveSpeed != 0f)
         {
             _isMoving = true;
-
-            Vector2 velocity = movement * moveSpeed;
-            rb.linearVelocity = velocity; 
+            velocity = movement * moveSpeed;
         }
         else
         {
-            rb.linearVelocity = Vector2.zero;
+            velocity = Vector2.zero;
             _isMoving = false;
         }
-    }
+
+        if (canDodge && dodgeInput > 0f)
+        {
+            _isDodging = true;
+            velocity = movement * (moveSpeed + _dodgeSpeedMod);
+        }
+        else if (canSprint && sprintInput > 0f)
+        {
+            _canSprint = true;
+            velocity = movement * (moveSpeed + _sprintSpeedMod);
+        } 
+        
+        rb.linearVelocity = velocity;
+}
 
     private void InputAttack()
     {
