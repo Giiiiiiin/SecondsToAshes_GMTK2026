@@ -1,23 +1,25 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] private Player_DataHandler playerMovement;
+    [SerializeField] private Player_DataHandler playerData;
     [SerializeField] private GameObject playerObject; //Aran
+
     private AnimationHandler animationHandler;
+
+    private GameObject instanceCombo1_E;
+    private GameObject instanceCombo1_W;
+
+    private GameObject instanceCombo2_E;
+    private GameObject instanceCombo2_W;
 
     Vector2 mouseScreenPos;
     Vector3 mousePosition;
     Vector2 mouseDir;
 
-    float cooldownMelee;
-
     void Awake()
     {
-        cooldownMelee = 0;
-
         animationHandler = GetComponent<AnimationHandler>();
     }
 
@@ -35,18 +37,7 @@ public class PlayerAnimations : MonoBehaviour
             mousePosition.x - transform.position.x,
             mousePosition.y - transform.position.y);
         
-        //this should prolly be moved in playermovement and just reference it here
-        if (cooldownMelee > 0f)
-        {
-            cooldownMelee -= Time.deltaTime;
-        
-            if (cooldownMelee <= 0f)
-            {
-                cooldownMelee = 0f;
-            }
-        }
-        
-        if (playerMovement.isMelee)
+        if (playerData.isMelee)
         {
             if (mouseDir.x > 0)
                 animationHandler.Play(PlayerAnimMovement.PlayerMelee_E);
@@ -56,7 +47,7 @@ public class PlayerAnimations : MonoBehaviour
             return;
         }
         
-        if (playerMovement.isMoving)
+        if (playerData.isMoving)
         {
             if (mouseDir.x > 0)
                 animationHandler.Play(PlayerAnimMovement.PlayerMove_E);
@@ -66,7 +57,7 @@ public class PlayerAnimations : MonoBehaviour
             return;
         }
         
-        if (playerMovement.isDodging || playerMovement.isSprinting)
+        if (playerData.isDodging || playerData.isSprinting)
         {
             if (mouseDir.x > 0)
                 animationHandler.Play(PlayerAnimMovement.PlayerSprint_E);
@@ -82,8 +73,54 @@ public class PlayerAnimations : MonoBehaviour
             animationHandler.Play(PlayerAnimMovement.PlayerIdle_W);
     }
 
-    public void Melee(float seconds)
+    public void begin_MeleeCombo_1()
     {
-        cooldownMelee += seconds / 5;
+        if (instanceCombo1_E != null || instanceCombo1_W != null)
+        {
+            end_MeleeCombo_1();
+
+            return;
+        }
+
+        if (playerData.equippedWeapon != null && instanceCombo1_E == null && instanceCombo1_W == null)
+        {
+            if (mouseDir.x > 0)
+            {
+                GameObject gameObject1 = Instantiate(playerData.equippedWeapon.attackList_E[0], playerObject.transform.position + playerData.equippedWeapon.offsetAttackList_E[0], Quaternion.identity, playerObject.transform);
+                instanceCombo1_E = gameObject1;
+
+                AttackObject attackObject = gameObject1.GetComponent<AttackObject>();
+                Debug.Log("AttackObject: " + attackObject);
+                if (attackObject != null)
+                {
+                    attackObject.sourceUnit = playerData;
+                    Debug.Log("AttackObject sourceUnit: " + attackObject.sourceUnit);
+                }
+            }
+            else
+            {
+                GameObject gameObject1 = Instantiate(playerData.equippedWeapon.attackList_W[0], playerObject.transform.position + playerData.equippedWeapon.offsetAttackList_W[0], Quaternion.identity, playerObject.transform);
+                instanceCombo1_W = gameObject1;
+
+                AttackObject attackObject = gameObject1.GetComponent<AttackObject>();
+                if (attackObject != null)
+                    attackObject.sourceUnit = playerData;
+            }
+        }
+    }
+
+    public void end_MeleeCombo_1()
+    {
+        if (instanceCombo1_E)
+        {
+            Destroy(instanceCombo1_E);
+        }
+
+        if (instanceCombo1_W)
+        {
+            Destroy(instanceCombo1_W);
+        }   
+
+        playerData.isMelee = false;
     }
 }

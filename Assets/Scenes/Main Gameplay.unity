@@ -17062,10 +17062,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -17317,13 +17317,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_DataHandler
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
-  equippedWeapon: {fileID: 0}
+  equippedWeapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
   playerAnimation: {fileID: 2125507438}
   gunWifeAnimation: {fileID: 342453957}
   _moveSpeed: 5
   _dodgeSpeedMod: 8
   _sprintSpeedMod: 8
   _attackSpeed: 5
+  attackBuffer: 0
 --- !u!61 &1890353277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17428,6 +17429,7 @@ GameObject:
   - component: {fileID: 1912053479}
   - component: {fileID: 1912053478}
   - component: {fileID: 1912053477}
+  - component: {fileID: 1912053481}
   m_Layer: 0
   m_Name: EnemyObject
   m_TagString: Untagged
@@ -17560,6 +17562,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1912053481
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912053476}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 999
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1925200528
 GameObject:
   m_ObjectHideFlags: 0
@@ -18446,10 +18475,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2125507435}
   - component: {fileID: 2125507436}
-  - component: {fileID: 2125507440}
   - component: {fileID: 2125507438}
-  - component: {fileID: 2125507439}
   - component: {fileID: 2125507437}
+  - component: {fileID: 2125507441}
+  - component: {fileID: 2125507442}
   m_Layer: 0
   m_Name: PlayerSprite
   m_TagString: Untagged
@@ -18519,7 +18548,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1351953815
   m_SortingLayer: 5
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 06ba8cea026a7af4fa89dd13e3ba11ac, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -18565,9 +18594,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb56544ba67a0b49b6cfd80a62509d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimations
-  playerMovement: {fileID: 1890353276}
+  playerData: {fileID: 1890353276}
   playerObject: {fileID: 1890353272}
---- !u!114 &2125507439
+--- !u!114 &2125507441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18579,7 +18608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6bb865d446bd9b4ca02e29284cced23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationHandler
---- !u!114 &2125507440
+--- !u!114 &2125507442
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18588,12 +18617,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2125507434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 506569ef4ff36d249b5a577b8dc5f776, type: 3}
+  m_Script: {fileID: 11500000, guid: 12d3948ab2b042f45822825e3d4e9d0e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatBase
-  combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
-  inventory: []
-  equippedWeapon: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMarker
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

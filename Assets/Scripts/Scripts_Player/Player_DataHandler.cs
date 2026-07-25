@@ -32,88 +32,101 @@ public class Player_DataHandler : CombatBase
     private bool _canMelee = false;
     private bool _canShoot = false;
 
+    public float attackBuffer = 0f;
     private float baseCooldown;
     private float cooldownShoot = 0f;
-    private float cooldownMelee = 0f;
     private float cooldownDodge = 0f;
     private float cooldownSwitch = 0f;
 
     //========================
-    //      GET_IsStatus
+    //      Get_Set_Status
     //========================
 
     public bool isMoving
     {
+        set { _isMoving = value; }
         get { return _isMoving; }
     }
 
     public bool isDashing
     {
+        set { _isDashing = value; }
         get { return _isDashing; }
     }
 
     public bool isDodging
     {
+        set { _isDodging = value; }
         get { return _isDodging; }
     }
 
     public bool isMelee
     {
+        set { _isMelee = value; }
         get { return _isMelee; }
     }
 
     public bool isShooting
     {
+        set { _isShooting = value; }
         get { return _isShooting; }
     }
     
     public bool isSprinting
     {
+        set { _isSprinting = value; }
         get { return _isSprinting; }
     }
 
     //========================
-    //      GET_CanStatus
+    //      Get_Set_CanDo
     //========================
 
     public bool canMove
     {
+        set { _canMove = value; }
         get { return _canMove; }
     }
 
     public bool canDash
     {
+        set { _canDash = value; }
         get { return _canDash; }
     }
 
     public bool canDodge
     {
+        set { _canDodge = value; }
         get { return _canDodge; }
     }
     
     public bool canSprint
     {
+        set { _canSprint = value; }
         get { return _canSprint; }
     }
 
     public bool canMelee
     {
+        set { _canMelee = value; }
         get { return _canMelee; }
     }
 
     public bool canShoot
     {
+        set { _canShoot = value; }
         get { return _canShoot; }
     }
 
     private void Awake()
     {
+        base.Awake();
+
         rb = GetComponent<Rigidbody2D>();
 
         if (rb == null) rb = new Rigidbody2D();
         if (gameInput == null) gameInput = new InputSystem_Action();
 
-        baseCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
         _canMove = true;
         _canDash = true;
         _canDodge = true;
@@ -132,18 +145,18 @@ private void OnEnable()
         gameInput.Disable();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (cooldownMelee > 0f)
-        {
-            cooldownMelee -= Time.deltaTime;
+        base.Update();
 
-            if (cooldownMelee <= 0f)
-            {
-                cooldownMelee = 0f;
-                _isMelee = false;
-            }
-        }
+        baseCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
+
+        if (attackBuffer > 0f)
+        {
+            attackBuffer -= Time.deltaTime;
+            if (attackBuffer <= 0f)
+                attackBuffer = 0f;
+        }  
 
         if (cooldownShoot > 0f)
         {
@@ -176,7 +189,9 @@ private void OnEnable()
     private void FixedUpdate()
     {
         InputMovement();
-        InputAttack();
+
+        if (attackBuffer == 0f)
+            InputAttack();
     }
 
     private void InputMovement()
@@ -227,7 +242,7 @@ private void OnEnable()
             TryShoot();
 
         if (melee > 0f)
-            TryMelee();
+            Attack();
     }
 
     private void TryShoot()
@@ -248,21 +263,19 @@ private void OnEnable()
         gunWifeAnimation.Shoot(cooldownShoot);
     }
 
-    private void TryMelee()
+    public override void Attack()
     {
-        if (!canMelee || isMelee || cooldownMelee > 0f || cooldownSwitch > 0f)
+        base.Attack();
+
+        if (!canMelee || isMelee || cooldownSwitch > 0f)
         {
             Debug.Log("Cannot Melee Instance!");
 
             return;
         }
-        
-        Debug.Log("Swung!");
+        Debug.Log("Swing!");
+
         _isMelee = true;
-
-        cooldownMelee += baseCooldown;
         cooldownSwitch = baseCooldown / 2;
-
-        playerAnimation.Melee(cooldownMelee);
     }
 }
