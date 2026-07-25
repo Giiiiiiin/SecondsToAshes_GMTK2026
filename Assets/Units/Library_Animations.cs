@@ -25,3 +25,11 @@ public enum PlayerAnimMovement
     // PlayerMelee_SW,
     // PlayerMelee_NW,
 }
+
+public enum GunAnimMovement
+{
+    GunWife_Idle_NE,
+    GunWife_Idle_SE,
+    GunWife_Idle_NW,
+    GunWife_Idle_SW,
+}
