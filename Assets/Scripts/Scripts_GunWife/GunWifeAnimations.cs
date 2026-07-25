@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class GunWifeAnimations : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Player_DataHandler playerDataHandler;
     private AnimationHandler animationHandler;
 
     Vector2 mouseScreenPos;
