@@ -17,16 +17,16 @@ public class CombatManager : MonoBehaviour
 
     private void CalculateDamage(CombatBase sourceUnit, CombatBase targetUnit)
     {
-        float damage = sourceUnit.UnitData.attackDamage - targetUnit.UnitData.hitPoints;
+        float damage = sourceUnit.UnitData.attackDamage - targetUnit.currentHitPoints;
         damage = Mathf.Max(damage, 0);
-        targetUnit.UnitData.hitPoints -= damage;
+        targetUnit.currentHitPoints -= damage;
     }
 
     public void DealDamage(CombatBase sourceUnit, CombatBase targetUnit)
     {
         CalculateDamage(sourceUnit, targetUnit);
 
-        if (targetUnit.UnitData.hitPoints <= 0)
+        if (targetUnit.currentHitPoints <= 0)
         {
             Destroy(targetUnit.gameObject);
         }

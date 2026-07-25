@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class PlayerMarker : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private static PlayerMarker _instance;
+    public static PlayerMarker Instance => _instance;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (_instance == null)
+            _instance = this;
+        else if (_instance != this)
+            Destroy(this);
     }
 }
