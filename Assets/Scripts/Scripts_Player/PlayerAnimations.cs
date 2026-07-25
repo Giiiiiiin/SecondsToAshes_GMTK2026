@@ -23,104 +23,56 @@ public class PlayerAnimations : MonoBehaviour
         animationHandler = GetComponent<AnimationHandler>();
     }
 
-    private void Start()
-    {
-        animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
-    }
-
     void Update()
     {
-        mouseScreenPos = Mouse.current.position.value;
-        mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        HandleAnimation();
+        FaceDirection();
+    }
 
-        mouseDir = new Vector2(
-            mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y);
-        
-        if (playerData.isMelee)
+    private void HandleAnimation()
+    {
+        //dodge
+        if (playerData.isDodging)
         {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_W);
-        
+            animationHandler.Play(PlayerAnimMovement.PlayerDodge);
             return;
         }
-        
+
+        //sprint
+        if (playerData.isMoving && playerData.isSprinting)
+        {
+            animationHandler.Play(PlayerAnimMovement.PlayerSprint);
+            return;
+        }
+
+        //walk
         if (playerData.isMoving)
         {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_W);
-        
+            animationHandler.Play(PlayerAnimMovement.PlayerWalk);
             return;
         }
-        
-        if (playerData.isDodging || playerData.isSprinting)
-        {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerSprint_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerSprint_W);
-        
-            return;
-        }
-        
-        if (mouseDir.x > 0)
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
-        else
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_W);
+
+        //idle (fallback)
+        animationHandler.Play(PlayerAnimMovement.PlayerIdle);
     }
 
-    public void begin_MeleeCombo_1()
+    private void FaceDirection()
     {
-        if (instanceCombo1_E != null || instanceCombo1_W != null)
+        Vector3 localScale = transform.localScale;
+
+        if (playerData.rb.linearVelocity.x > 0f)
         {
-            end_MeleeCombo_1();
-
-            return;
+            localScale.x = Mathf.Abs(localScale.x); // right
         }
-
-        if (playerData.equippedWeapon != null && instanceCombo1_E == null && instanceCombo1_W == null)
+        else if (playerData.rb.linearVelocity.x < 0f)
         {
-            if (mouseDir.x > 0)
-            {
-                GameObject gameObject1 = Instantiate(playerData.equippedWeapon.attackList_E[0], playerObject.transform.position + playerData.equippedWeapon.offsetAttackList_E[0], Quaternion.identity, playerObject.transform);
-                instanceCombo1_E = gameObject1;
-
-                AttackObject attackObject = gameObject1.GetComponent<AttackObject>();
-                Debug.Log("AttackObject: " + attackObject);
-                if (attackObject != null)
-                {
-                    attackObject.sourceUnit = playerData;
-                    Debug.Log("AttackObject sourceUnit: " + attackObject.sourceUnit);
-                }
-            }
-            else
-            {
-                GameObject gameObject1 = Instantiate(playerData.equippedWeapon.attackList_W[0], playerObject.transform.position + playerData.equippedWeapon.offsetAttackList_W[0], Quaternion.identity, playerObject.transform);
-                instanceCombo1_W = gameObject1;
-
-                AttackObject attackObject = gameObject1.GetComponent<AttackObject>();
-                if (attackObject != null)
-                    attackObject.sourceUnit = playerData;
-            }
+            localScale.x = -Mathf.Abs(localScale.x); // left
         }
+        base.transform.localScale = localScale;
     }
 
-    public void end_MeleeCombo_1()
+    public void EndDodge() 
     {
-        if (instanceCombo1_E)
-        {
-            Destroy(instanceCombo1_E);
-        }
-
-        if (instanceCombo1_W)
-        {
-            Destroy(instanceCombo1_W);
-        }   
-
-        playerData.isMelee = false;
+        playerData.EndDodge();
     }
 }
