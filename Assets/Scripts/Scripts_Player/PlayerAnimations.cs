@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private GameObject playerObject;
+    [SerializeField] private Player_DataHandler playerMovement;
+    [SerializeField] private GameObject playerObject; //Aran
     private AnimationHandler animationHandler;
 
     Vector2 mouseScreenPos;

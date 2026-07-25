@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
@@ -14,9 +15,9 @@ public class CombatManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void DealDamage(CombatUnit_ScriptableObject targetUnit)
+    public void DealDamage(CombatUnit_ScriptableObject sourceUnit, CombatUnit_ScriptableObject targetUnit)
     {
-
+        
     }
 
     public void SpawnAttack(CombatWeapon_ScriptableObject weaponUnit)
