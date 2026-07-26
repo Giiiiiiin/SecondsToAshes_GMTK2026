@@ -13,8 +13,6 @@ public class CombatUnit_ScriptableObject : ScriptableObject
 
     public float attackDamage;
     public float attackSpeed;
-    public float armorDefense;
-    public float armorPenetration;
     public float hitPoints;
     public float unitSpeed;
 }

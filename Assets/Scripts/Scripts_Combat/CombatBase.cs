@@ -8,9 +8,10 @@ public class CombatBase : MonoBehaviour
     [SerializeField] protected CombatUnit_ScriptableObject combatData;
     [SerializeField] protected List<GameObject> inventory;
 
+    public float currentHitPoints;
     public GameObject Source => gameObject;
     public CombatWeapon_ScriptableObject equippedWeapon;
-
+    protected float attackCooldown = 0f;
     public CombatUnit_ScriptableObject UnitData
     {
         get { return combatData; }
@@ -27,7 +28,7 @@ public class CombatBase : MonoBehaviour
         set => equippedWeapon = value;
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         combatData = Instantiate(combatData);
         combatData.Source = gameObject;
@@ -38,7 +39,10 @@ public class CombatBase : MonoBehaviour
 
     private void Start()
     {
+        currentHitPoints = combatData.hitPoints;
+
         Debug.Log("Unit DATA: " + UnitData.Source);
+        Debug.Log("Unit WEAPON: " + equippedWeapon);
     }
 
     public CombatWeapon_ScriptableObject SearchInventoryWeapon(string weaponName)
@@ -57,6 +61,17 @@ public class CombatBase : MonoBehaviour
         return null;
     }
 
+    protected virtual void Update()
+    {
+        if (attackCooldown > 0f)
+        {
+            attackCooldown -= Time.deltaTime;
+
+            if (attackCooldown <= 0f)
+                attackCooldown = 0f;
+        }
+    }
+
     public void EquipWeapon (string weaponName)
     {
         Weapon = SearchInventoryWeapon(weaponName);
@@ -72,8 +87,13 @@ public class CombatBase : MonoBehaviour
         // Base function that is called by all Units if thir Attacks hit a valid target
     }
 
-    public virtual void OnDamage()
+    public virtual void OnDamage(CombatBase source, CombatBase target)
     {
+        PlayerMarker playerMarker = target.GetComponent<PlayerMarker>();
+
+        if (CombatManager.Instance != null && playerMarker != true)
+            CombatManager.Instance.DealDamage(source, target);
+
         // Base function that is called by all Units if they are Damaged by an Attack
     }
 }
