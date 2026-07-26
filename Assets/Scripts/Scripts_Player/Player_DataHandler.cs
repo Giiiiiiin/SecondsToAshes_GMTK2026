@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
@@ -12,9 +13,10 @@ public class Player_DataHandler : CombatBase
     private Vector2 savedDir = Vector2.zero; // last faced direction
     private bool sprintButtonDown = false; //check if sprint button is held down
 
-    [SerializeField] private float _dodgeSpeedMod = 8f;
-    [SerializeField] private float _sprintSpeedMod = 8f;
+    public static UnityEvent ShootGun = new UnityEvent();
 
+    [SerializeField] private float _dodgeSpeedMod = 30f;
+    [SerializeField] private float _sprintSpeedMod = 40f;
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -308,7 +310,7 @@ public class Player_DataHandler : CombatBase
         if (!_canShoot || _isShooting || cooldownShoot > 0f || cooldownSwitch > 0f)
         {
             Debug.Log("Cannot Shoot Instance!");
-
+            ShootGun.Invoke();
             return;
         }
 
@@ -318,7 +320,13 @@ public class Player_DataHandler : CombatBase
         cooldownShoot += baseCooldown;
         cooldownSwitch = baseCooldown / 2;
 
-        // gunWifeAnimation.Shoot(cooldownShoot);
+        gunWifeAnimation.Shoot();
+    }
+
+    public void EndShoot()
+    {
+        _isShooting = false;
+        canShoot = true;
     }
 
     public override void Attack()
