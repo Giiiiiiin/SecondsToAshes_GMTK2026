@@ -1,14 +1,3 @@
-fileFormatVersion: 2
-guid: 1e373edee31976e4188d57dd2c730b1c
-PrefabImporter:
-  externalObjects: {}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 317119
-  packageName: 32x32 Isometric Tileset Pack
-  packageVersion: 1.0
-  assetPath: Assets/Free 32x32 Isometric Tileset Pack/Sample Tileset/Sample Grid.prefab
-  uploadId: 756637
+version https://git-lfs.github.com/spec/v1
+oid sha256:a525800ac1325e5c5303259e28affb74a1eb6373fe29019404eccb20c0649305
+size 383

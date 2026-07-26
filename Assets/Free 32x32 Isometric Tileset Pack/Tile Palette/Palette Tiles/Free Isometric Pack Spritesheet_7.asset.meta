@@ -1,16 +1,3 @@
-fileFormatVersion: 2
-guid: c95ac0afa82a03047a3b4abe424472e2
-NativeFormatImporter:
-  externalObjects: {}
-  mainObjectFileID: 11400000
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 317119
-  packageName: 32x32 Isometric Tileset Pack
-  packageVersion: 1.0
-  assetPath: Assets/Free 32x32 Isometric Tileset Pack/Tile Palette/Palette Tiles/Free
-    Isometric Pack Spritesheet_7.asset
-  uploadId: 756637
+version https://git-lfs.github.com/spec/v1
+oid sha256:fab5f856dc95efef15c96966931860a73ef6b3dae55df6debf99a20f83cd0755
+size 455
