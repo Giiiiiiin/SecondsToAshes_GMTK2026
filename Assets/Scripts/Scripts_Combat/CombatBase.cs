@@ -92,8 +92,16 @@ public class CombatBase : MonoBehaviour
         PlayerMarker playerMarker = target.GetComponent<PlayerMarker>();
 
         if (CombatManager.Instance != null && playerMarker != true)
+        {
             CombatManager.Instance.DealDamage(source, target);
+        }
+        else
+        {
+            WifeSoul.instance.ReduceWifeSoul(combatData.attackDamage);
+        }
 
+
+        
         // Base function that is called by all Units if they are Damaged by an Attack
     }
 }

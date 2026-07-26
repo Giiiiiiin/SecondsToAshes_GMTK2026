@@ -10,7 +10,7 @@ public class AttackObject : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("AttackObject SourceUnit Awake: " + sourceUnit);
+        Debug.Log("AttackObject SourceUnit Awake: " + sourceUnit.gameObject);
 
         _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -19,12 +19,12 @@ public class AttackObject : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("AttackObject SourceUnit Start: " + sourceUnit);
+        Debug.Log("AttackObject SourceUnit Start: " + sourceUnit.gameObject);
         
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("AttackObject SourceUnit: " + sourceUnit);
+        Debug.Log("AttackObject SourceUnit: " + sourceUnit.name);
         Debug.Log("AttackObject CollisionUnit: " + collision.gameObject);
 
         CombatBase unit = collision.gameObject.GetComponent<CombatBase>();

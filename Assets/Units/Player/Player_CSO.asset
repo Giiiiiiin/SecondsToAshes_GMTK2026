@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player_CSO
   m_EditorClassIdentifier: Assembly-CSharp::CombatUnit_ScriptableObject
   Source: {fileID: 0}
-  Weapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
+  Weapon: {fileID: 11400000, guid: d9a3bc57a1862664284d3663c14d6028, type: 2}
   UnitName: PlayerCharacter
   UnitSerialNumber: 000
   attackDamage: 5

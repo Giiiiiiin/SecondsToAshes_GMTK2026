@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3492555912238723910}
   - component: {fileID: 4365091263899709478}
   m_Layer: 0
-  m_Name: Player_Combo1_Ehb
+  m_Name: 'Player_Combo3_Ehb '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 3540754826820544865}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d1d80e2553963b0429c13a333fdb9573, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4d93e4666739d714b8474700923d94eb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackObject
   sourceUnit: {fileID: 0}
+  _fixedJoint: {fileID: 0}
 --- !u!255 &4365091263899709478
 FixedJoint2D:
   m_ObjectHideFlags: 0
@@ -220,6 +221,6 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0.22, y: -0.12}
   m_DampingRatio: 0
   m_Frequency: 0

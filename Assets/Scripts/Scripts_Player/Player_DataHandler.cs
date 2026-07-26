@@ -17,6 +17,7 @@ public class Player_DataHandler : CombatBase
 
     [SerializeField] private float _dodgeSpeedMod = 30f;
     [SerializeField] private float _sprintSpeedMod = 40f;
+    [SerializeField] private float _lungeForce = 2f;
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -67,7 +68,7 @@ public class Player_DataHandler : CombatBase
         set { _isDodging = value; }
         get { return _isDodging; }
     }
-    
+
     public bool isSprinting
     {
         set { _isSprinting = value; }
@@ -89,7 +90,7 @@ public class Player_DataHandler : CombatBase
         set { _canDodge = value; }
         get { return _canDodge; }
     }
-    
+
     public bool canSprint
     {
         set { _canSprint = value; }
@@ -184,16 +185,15 @@ public class Player_DataHandler : CombatBase
             }
         }
 
-        //if (cooldownDodge > 0f)
-        //{
-        //    cooldownDodge -= Time.deltaTime;
-
-        //    if (cooldownDodge <= 0f)
-        //        cooldownDodge = 0f;
-        //}
-
-        //LungeOnAttack();
-
+        // if (cooldownDodge > 0f)
+        // {
+        //     cooldownDodge -= Time.deltaTime;
+        //
+        //     if (cooldownDodge <= 0f)
+        //         cooldownDodge = 0f;
+        // }
+        //
+        LungeOnAttack();
         InputSprint();
     }
 
@@ -248,12 +248,15 @@ public class Player_DataHandler : CombatBase
         if (gameInput.Player.Dodge.IsPressed())
         {
             _isSprinting = true;
-            if (canDodge && !sprintButtonDown) {  // only allow the dash once per sprint hold
+            if (canDodge && !sprintButtonDown)
+            {
+                // only allow the dash once per sprint hold
 
                 canDodge = false;
                 _isDodging = true;
                 StartCoroutine(Dodge());
             }
+
             sprintButtonDown = true;
         }
         else
@@ -270,15 +273,16 @@ public class Player_DataHandler : CombatBase
 
         Vector2 dashDirection = moveInput;
 
-        if (dashDirection == Vector2.zero)  // previous direction as fallback
+        if (dashDirection == Vector2.zero) // previous direction as fallback
         {
             dashDirection = savedDir;
         }
 
-        if (dashDirection == Vector2.zero)  // initial fallback
+        if (dashDirection == Vector2.zero) // initial fallback
         {
             dashDirection = Vector2.right;
         }
+
         _rb.linearVelocity = dashDirection.normalized * _dodgeSpeedMod; // burst movement from dash
 
         yield return null;
@@ -339,12 +343,12 @@ public class Player_DataHandler : CombatBase
 
             return;
         }
+
         Debug.Log("Swing!");
 
         //something about the combo timer here
 
         _canMelee = false;
-
         _comboIndex++;
 
         if (_comboIndex > 3)
@@ -358,21 +362,19 @@ public class Player_DataHandler : CombatBase
         cooldownSwitch = baseCooldown / 2;
     }
 
-    //private void LungeOnAttack()
-    //{
-    //    Vector2 dir = //get direction of mouse 
 
-    //    // lunge override 
-    //    if (_isLunging)
-    //    {
-    //        _isLunging = false;
+    private void LungeOnAttack()
+    {
+        Vector2 dir = gunWifeAnimation.GetMouseDir();
 
-    //        float lungeForce = 5;
-
-    //        _rb.linearVelocity = dir * lungeForce;
-    //        return;
-    //    }
-    //}
+        // lunge override 
+        if (_isLunging)
+        {
+            _isLunging = false;
+            _rb.linearVelocity = dir * _lungeForce;
+            return;
+        }
+    }
 
     private IEnumerator Melee() // controls melee attack timing
     {
@@ -389,6 +391,15 @@ public class Player_DataHandler : CombatBase
         _canDodge = true;
         _canMelee = true;
         _isMelee = false;
+    }
+
+    public void DisablePlayer()
+    {
+        _canMove = false;
+        _canDodge = false;
+        _canShoot = false;
+        _canSprint = false;
+        _canMelee = true;
     }
 
 }
