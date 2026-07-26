@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: TestDummmy
   m_EditorClassIdentifier: Assembly-CSharp::CombatUnit_ScriptableObject
   Source: {fileID: 0}
-  Weapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
+  Weapon: {fileID: 11400000, guid: ebb3af6b1a4445d459c9833fc4f9f647, type: 2}
   UnitName: Dummy
   UnitSerialNumber: 001
   attackDamage: 1
-  attackSpeed: 1
+  attackSpeed: 0.5
   hitPoints: 3
-  unitSpeed: 0
+  unitSpeed: 3

@@ -46,6 +46,7 @@ public class BaseEnemyLogic : CombatBase
     private void Update()
     {
         base.Update();
+        Debug.Log("Attack Cooldown: " + attackCooldown);
 
         if (playerMarker == null)
             playerMarker = PlayerMarker.Instance;
@@ -77,7 +78,7 @@ public class BaseEnemyLogic : CombatBase
             if (rb.linearVelocity != Vector2.zero)
                 savedDir = rb.linearVelocity; 
 
-            if (walkAnimation != null && walkAnimation != "")
+            if (walkAnimation != null && walkAnimation != "" && !isAttacking)
                 animationHandler.Play(walkAnimation);
         }
 
@@ -108,7 +109,7 @@ public class BaseEnemyLogic : CombatBase
 
     public void AddCooldown()
     {
-        float addCooldown = 10f;
+        float addCooldown = Mathf.Max(0f, 1 / combatData.attackSpeed);
         attackCooldown += addCooldown;
 
         Debug.Log("Add Cooldown called: " + attackCooldown);
@@ -121,6 +122,7 @@ public class BaseEnemyLogic : CombatBase
             Debug.Log("Attack is on Cooldown");
             return;
         }
+        AddCooldown();
 
         Debug.Log("BaseEnemyLogic Attack: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
 
@@ -131,7 +133,5 @@ public class BaseEnemyLogic : CombatBase
             Debug.Log("Animation Called");
             animationHandler.Play(initialCombatAnimation);
         }
-
-        return;
     }
 }

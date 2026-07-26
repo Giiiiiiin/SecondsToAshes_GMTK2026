@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AttackObject : MonoBehaviour
 {
+    public bool destroyOnHit = false;
     public CombatBase sourceUnit;
     public FixedJoint2D _fixedJoint;
 
@@ -33,6 +34,11 @@ public class AttackObject : MonoBehaviour
         {
             sourceUnit.OnHit();
             unit.OnDamage(sourceUnit, unit);
+
+            if (destroyOnHit)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

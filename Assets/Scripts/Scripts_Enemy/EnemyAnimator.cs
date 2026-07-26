@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyAnimator : MonoBehaviour
 {
     [SerializeField] private BaseEnemyLogic enemyLogic;
+    public bool attachJoint = true;
 
     private int attackDirection;
     private GameObject instanceCombo1;
@@ -33,8 +34,6 @@ public class EnemyAnimator : MonoBehaviour
 
     public void begin_Combo_1()
     {
-        enemyLogic.AddCooldown();
-
         Debug.Log("begin_Combo_1 called");
         if (instanceCombo1 != null)
         {
@@ -52,22 +51,22 @@ public class EnemyAnimator : MonoBehaviour
         if (attackObject != null)
         {
             attackObject.sourceUnit = enemyLogic;
-            attackObject._fixedJoint.connectedBody = enemyLogic.GetComponent<Rigidbody2D>();  
+            if (attachJoint)
+                attackObject._fixedJoint.connectedBody = enemyLogic.GetComponent<Rigidbody2D>();  
         }
     }
 
     public void end_Combo_1()
     {
-        Debug.Log("end_Combo_1 called Enter: " + instanceCombo1 != null);
-        Debug.Log("end_Combo_1 called Enter: " + instanceCombo1.gameObject);
+        Debug.Log("end_Combo_1 called");
 
         if (instanceCombo1 != null)
         {
             Destroy(instanceCombo1.gameObject);
             instanceCombo1 = null;
+            Debug.Log("end_Combo_1 called and instance destroyed");
         }
-        Debug.Log("end_Combo_1 called Exit: " + instanceCombo1 != null);
-        Debug.Log("end_Combo_1 called Exit: " + instanceCombo1.gameObject);
+
         enemyLogic.IsAttacking = false;
     }
 }
