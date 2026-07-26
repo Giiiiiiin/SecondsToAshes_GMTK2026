@@ -7,12 +7,8 @@ public class CombatWeapon_ScriptableObject : ScriptableObject
 {
     public Sprite Source;
     public List<float> attackBufferList = new List<float>();
-
-    public List<GameObject> attackList_E = new List<GameObject>();
-    public List<GameObject> attackList_W = new List<GameObject>();
-
-    public List<Vector3> offsetAttackList_W = new List<Vector3>();
-    public List<Vector3> offsetAttackList_E = new List<Vector3>();
+    public List<GameObject> attackList = new List<GameObject>();
+    public List<Vector3> offsetAttackList = new List<Vector3>();
 
     public string UnitName;
     public string UnitSerialNumber;

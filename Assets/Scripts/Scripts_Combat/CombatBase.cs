@@ -72,12 +72,6 @@ public class CombatBase : MonoBehaviour
         }
     }
 
-    public void AddCooldown()
-    {
-        float addCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
-        attackCooldown += addCooldown;
-    }
-
     public void EquipWeapon (string weaponName)
     {
         Weapon = SearchInventoryWeapon(weaponName);
@@ -85,15 +79,6 @@ public class CombatBase : MonoBehaviour
 
     public virtual void Attack()
     {
-        if (attackCooldown > 0f)
-        {
-            Debug.Log("Attack is on Cooldown");
-            return;
-        }
-
-        float addCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
-        attackCooldown += addCooldown;
-
         // Base function that is called by all Units to Attack
     }
 

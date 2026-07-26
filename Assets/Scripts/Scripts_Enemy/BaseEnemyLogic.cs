@@ -10,24 +10,22 @@ public class BaseEnemyLogic : CombatBase
     private AnimationHandler animationHandler;
     private CombatUnit_ScriptableObject combatData => UnitData;
 
-    [SerializeField] private string idleAnimation_E;
-    [SerializeField] private string idleAnimation_W;
-
-    [SerializeField] private string walkAnimation_E;
-    [SerializeField] private string walkAnimation_W;
-
-    [SerializeField] private string initialCombatAnimation_E;
-    [SerializeField] private string initialCombatAnimation_W;
+    [SerializeField] private string idleAnimation;
+    [SerializeField] private string walkAnimation;
+    [SerializeField] private string initialCombatAnimation;
 
     [SerializeField] private float circleAggroRadius = 3f;
     [SerializeField] private float circleAttackRadius = 1f;
     private bool isAttacking = false;
 
+    private Vector2 savedDir = Vector2.zero;
     private Vector2 targetDir;
     private float attackBuffer = 0f;
     
     public AnimationHandler AnimationHandler => animationHandler;
     public Vector2 TargetDir => targetDir;
+    public Vector2 SavedDir => savedDir;
+
     public bool IsAttacking
     {
         get { return isAttacking; }
@@ -59,49 +57,31 @@ public class BaseEnemyLogic : CombatBase
         float speed = combatData.unitSpeed;
         float distance = targetDir.magnitude;
 
-        if (!isAttacking)
-        {
-            if (targetDir.x > 0)
-            {
-                if (idleAnimation_E != null && idleAnimation_E != "")
-                    animationHandler.Play(idleAnimation_E);
-            }
-            else
-            {
-                if (idleAnimation_W != null && idleAnimation_W != "")
-                    animationHandler.Play(idleAnimation_W);
-            }
-        }
-
-        if (attackBuffer > 0f)
-        {
-            attackBuffer -= Time.deltaTime;
-
-            if (attackBuffer <= 0f)
-                attackBuffer = 0f;
-        }
-
-        if (distance >= circleAggroRadius)
+        if (distance > circleAggroRadius)
         {
             rb.linearVelocity = Vector2.zero;
 
             isAttacking = false;
+
+            if (idleAnimation != null && idleAnimation != "")
+                animationHandler.Play(idleAnimation);
         }
         else
         {
-            rb.linearVelocity = targetDir.normalized * speed;
+            Vector2 velocity = Vector2.zero;
+            velocity = targetDir * combatData.unitSpeed;
 
-            if (targetDir.x > 0)
-            {
-                if (walkAnimation_E != null && walkAnimation_E != "")
-                    animationHandler.Play(walkAnimation_E);
-            }
-            else
-            {
-                if (walkAnimation_W != null && walkAnimation_W != "")
-                    animationHandler.Play(walkAnimation_W);
-            }
+            rb.linearVelocity = targetDir.normalized * speed;
+            rb.AddForce(velocity * Time.deltaTime, ForceMode2D.Impulse);
+
+            if (rb.linearVelocity != Vector2.zero)
+                savedDir = rb.linearVelocity; 
+
+            if (walkAnimation != null && walkAnimation != "")
+                animationHandler.Play(walkAnimation);
         }
+
+        FaceDirection();
 
         if (distance <= circleAttackRadius)
         {
@@ -111,24 +91,45 @@ public class BaseEnemyLogic : CombatBase
         }
     }
 
+    private void FaceDirection()
+    {
+        Vector3 localScale = transform.localScale;
+
+        if (rb.linearVelocity.x > 0f)
+        {
+            localScale.x = Mathf.Abs(localScale.x); // right
+        }
+        else if (rb.linearVelocity.x < 0f)
+        {
+            localScale.x = -Mathf.Abs(localScale.x); // left
+        }
+        base.transform.localScale = localScale;
+    }
+
+    public void AddCooldown()
+    {
+        float addCooldown = 10f;
+        attackCooldown += addCooldown;
+
+        Debug.Log("Add Cooldown called: " + attackCooldown);
+    }
+
     public override void Attack()
     {
+        if (attackCooldown > 0f)
+        {
+            Debug.Log("Attack is on Cooldown");
+            return;
+        }
+
         Debug.Log("BaseEnemyLogic Attack: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
-        base.Attack();
+
         isAttacking = true;
 
-        if (isAttacking)
+        if (initialCombatAnimation != null && initialCombatAnimation != "")
         {
-            if (targetDir.x > 0)
-            {
-                if (initialCombatAnimation_E != null && initialCombatAnimation_E != "")
-                    animationHandler.Play(initialCombatAnimation_E);
-            }
-            else
-            {
-                if (initialCombatAnimation_W != null && initialCombatAnimation_W != "")
-                    animationHandler.Play(initialCombatAnimation_W);
-            }
+            Debug.Log("Animation Called");
+            animationHandler.Play(initialCombatAnimation);
         }
 
         return;

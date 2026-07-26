@@ -3,6 +3,7 @@ using UnityEngine;
 public class AttackObject : MonoBehaviour
 {
     public CombatBase sourceUnit;
+    public FixedJoint2D _fixedJoint;
 
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
@@ -13,6 +14,7 @@ public class AttackObject : MonoBehaviour
 
         _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _fixedJoint = GetComponent<FixedJoint2D>();
     }
 
     private void Start()
