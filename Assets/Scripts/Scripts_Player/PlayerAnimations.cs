@@ -8,16 +8,6 @@ public class PlayerAnimations : MonoBehaviour
 
     private AnimationHandler animationHandler;
 
-    private GameObject instanceCombo1_E;
-    private GameObject instanceCombo1_W;
-
-    private GameObject instanceCombo2_E;
-    private GameObject instanceCombo2_W;
-
-    Vector2 mouseScreenPos;
-    Vector3 mousePosition;
-    Vector2 mouseDir;
-
     void Awake()
     {
         animationHandler = GetComponent<AnimationHandler>();
@@ -31,6 +21,18 @@ public class PlayerAnimations : MonoBehaviour
 
     private void HandleAnimation()
     {
+        int combo = playerData.comboIndex;
+        string comboState;
+
+        //melee attack
+        if (playerData.isMelee)
+        {
+            comboState = "PlayerMelee" + combo;
+
+            animationHandler.Play(comboState);
+            return;
+        }
+
         //dodge
         if (playerData.isDodging)
         {
@@ -74,5 +76,10 @@ public class PlayerAnimations : MonoBehaviour
     public void EndDodge() 
     {
         playerData.EndDodge();
+    }
+
+    public void EndMelee()
+    {
+        playerData.endMelee();
     }
 }

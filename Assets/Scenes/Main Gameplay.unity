@@ -17318,13 +17318,14 @@ MonoBehaviour:
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
   equippedWeapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
-  playerAnimation: {fileID: 2125507438}
   gunWifeAnimation: {fileID: 342453957}
-  playerCombat: {fileID: 0}
   _dodgeSpeedMod: 30
   _sprintSpeedMod: 40
-  _attackSpeed: 5
+  _comboIndex: 0
+  _canMelee: 0
+  _isMelee: 0
   attackBuffer: 0
+  _attackSpeed: 5
 --- !u!61 &1890353277
 BoxCollider2D:
   m_ObjectHideFlags: 0
