@@ -8,19 +8,13 @@ using UnityEngine.Windows;
 
 public class Player_DataHandler : CombatBase
 {
-    [SerializeField] private PlayerAnimations playerAnimation;
-    // [SerializeField] private GunWifeAnimations gunWifeAnimation;
-
-    [SerializeField] private Player_CombatData playerCombat; // player combat things
+    [SerializeField] private GunWifeAnimations gunWifeAnimation;
 
     private Vector2 savedDir = Vector2.zero; // last faced direction
     private bool sprintButtonDown = false; //check if sprint button is held down
 
     [SerializeField] private float _dodgeSpeedMod = 8f;
     [SerializeField] private float _sprintSpeedMod = 8f;
-    [SerializeField] private float _attackSpeed = 5f;
-
-    public static UnityEvent ShootGun = new UnityEvent();
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -31,21 +25,30 @@ public class Player_DataHandler : CombatBase
     private bool _isDodging = false;
     private bool _isSprinting = false;
 
-    private bool _isMelee = false;
-    private bool _isShooting = false;
-
     private bool _canMove = false;
     private bool _canDodge = false;
     private bool _canSprint = false;
 
-    private bool _canMelee = false;
+    // COMBAT THINGS
+    private bool _isLunging;
+
+    // combo parameters
+    public int _comboIndex = 0;
+    private float comboTimer = 0f;
+
+    // actions checks
+    public bool _canMelee = false;
     private bool _canShoot = false;
+
+    public bool _isMelee = false;
+    private bool _isShooting = false;
 
     public float attackBuffer = 0f;
     private float baseCooldown;
     private float cooldownShoot = 0f;
-    private float cooldownDodge = 0f;
     private float cooldownSwitch = 0f;
+
+    [SerializeField] private float _attackSpeed = 5f;
 
     //========================
     //      Get_Set_Status
@@ -61,18 +64,6 @@ public class Player_DataHandler : CombatBase
     {
         set { _isDodging = value; }
         get { return _isDodging; }
-    }
-
-    public bool isMelee
-    {
-        set { _isMelee = value; }
-        get { return _isMelee; }
-    }
-
-    public bool isShooting
-    {
-        set { _isShooting = value; }
-        get { return _isShooting; }
     }
     
     public bool isSprinting
@@ -103,6 +94,14 @@ public class Player_DataHandler : CombatBase
         get { return _canSprint; }
     }
 
+    // get rigidbody
+
+    public Rigidbody2D rb
+    {
+        get { return _rb; }
+    }
+
+    // FOR COMBAT
     public bool canMelee
     {
         set { _canMelee = value; }
@@ -115,11 +114,22 @@ public class Player_DataHandler : CombatBase
         get { return _canShoot; }
     }
 
-    // =====
-
-    public Rigidbody2D rb
+    public bool isMelee
     {
-        get { return _rb; }
+        set { _isMelee = value; }
+        get { return _isMelee; }
+    }
+
+    public bool isShooting
+    {
+        set { _isShooting = value; }
+        get { return _isShooting; }
+    }
+
+    public int comboIndex
+    {
+        set { _comboIndex = value; }
+        get { return _comboIndex; }
     }
 
     private void Awake()
@@ -152,8 +162,6 @@ public class Player_DataHandler : CombatBase
     {
         base.Update();
 
-        InputSprint();
-
         baseCooldown = Mathf.Max(0.1f, 1f / Mathf.Max(combatData.attackSpeed, 0.1f));
 
         if (attackBuffer > 0f)
@@ -161,7 +169,7 @@ public class Player_DataHandler : CombatBase
             attackBuffer -= Time.deltaTime;
             if (attackBuffer <= 0f)
                 attackBuffer = 0f;
-        }  
+        }
 
         if (cooldownShoot > 0f)
         {
@@ -175,21 +183,17 @@ public class Player_DataHandler : CombatBase
             }
         }
 
-        if (cooldownDodge > 0f)
-        {
-            cooldownDodge -= Time.deltaTime;
+        //if (cooldownDodge > 0f)
+        //{
+        //    cooldownDodge -= Time.deltaTime;
 
-            if (cooldownDodge <= 0f)
-                cooldownDodge = 0f;
-        }
+        //    if (cooldownDodge <= 0f)
+        //        cooldownDodge = 0f;
+        //}
 
-        if (cooldownSwitch > 0f)
-        {
-            cooldownSwitch -= Time.deltaTime;
+        //LungeOnAttack();
 
-            if (cooldownSwitch <= 0f)
-                cooldownSwitch = 0f;
-        }
+        InputSprint();
     }
 
     private void FixedUpdate()
@@ -286,6 +290,8 @@ public class Player_DataHandler : CombatBase
         _canMove = true;
     }
 
+    // COMBAT THINGIES
+
     private void InputAttack()
     {
         float shoot = gameInput.Player.Shoot.ReadValue<float>();
@@ -300,7 +306,7 @@ public class Player_DataHandler : CombatBase
 
     private void TryShoot()
     {
-        if (!canShoot || isShooting || cooldownShoot > 0f || cooldownSwitch > 0f)
+        if (!_canShoot || _isShooting || cooldownShoot > 0f || cooldownSwitch > 0f)
         {
             Debug.Log("Cannot Shoot Instance!");
             return;
@@ -324,7 +330,7 @@ public class Player_DataHandler : CombatBase
     {
         base.Attack();
 
-        if (!canMelee || isMelee || cooldownSwitch > 0f)
+        if (!_canMelee || _isMelee)
         {
             Debug.Log("Cannot Melee Instance!");
 
@@ -332,13 +338,54 @@ public class Player_DataHandler : CombatBase
         }
         Debug.Log("Swing!");
 
+        //something about the combo timer here
+
+        _canMelee = false;
+
+        _comboIndex++;
+
+        if (_comboIndex > 3)
+            _comboIndex = 1;
+
+        _isLunging = true;
         _isMelee = true;
+
+        StartCoroutine(Melee());
+
         cooldownSwitch = baseCooldown / 2;
     }
-    
-    public void EndMelee()
+
+    //private void LungeOnAttack()
+    //{
+    //    Vector2 dir = //get direction of mouse 
+
+    //    // lunge override 
+    //    if (_isLunging)
+    //    {
+    //        _isLunging = false;
+
+    //        float lungeForce = 5;
+
+    //        _rb.linearVelocity = dir * lungeForce;
+    //        return;
+    //    }
+    //}
+
+    private IEnumerator Melee() // controls melee attack timing
     {
-        _isMelee = false;
-        _canMelee = true;
+        _canMove = false;
+        _canDodge = false;
+        _isMelee = true;
+
+        yield return null;
     }
+
+    public void endMelee()
+    {
+        _canMove = true;
+        _canDodge = true;
+        _canMelee = true;
+        _isMelee = false;
+    }
+
 }

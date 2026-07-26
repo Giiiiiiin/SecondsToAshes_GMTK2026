@@ -8,12 +8,6 @@ public class PlayerAnimations : MonoBehaviour
     [SerializeField] private GameObject playerObject; //Aran
     private AnimationHandler animationHandler;
 
-    Vector2 mouseScreenPos;
-    Vector3 mousePosition;
-    Vector2 mouseDir;
-
-    float cooldownMelee;
-
     void Awake()
     {
         cooldownMelee = 0;
@@ -30,12 +24,22 @@ public class PlayerAnimations : MonoBehaviour
         mouseScreenPos = Mouse.current.position.value;
         mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        mouseDir = new Vector2(
-            mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y);
-        
-        //this should prolly be moved in playermovement and just reference it here
-        if (cooldownMelee > 0f)
+    private void HandleAnimation()
+    {
+        int combo = playerData.comboIndex;
+        string comboState;
+
+        //melee attack
+        if (playerData.isMelee)
+        {
+            comboState = "PlayerMelee" + combo;
+
+            animationHandler.Play(comboState);
+            return;
+        }
+
+        //dodge
+        if (playerData.isDodging)
         {
             cooldownMelee -= Time.deltaTime;
         
@@ -84,5 +88,10 @@ public class PlayerAnimations : MonoBehaviour
     public void Melee(float seconds)
     {
         cooldownMelee += seconds / 5;
+    }
+
+    public void EndMelee()
+    {
+        playerData.endMelee();
     }
 }
