@@ -54831,7 +54831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!156049354 &1206342439
 Grid:
   m_ObjectHideFlags: 0
@@ -55651,7 +55651,7 @@ TilemapRenderer:
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0.0024366379, y: 1.0595151, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 1.0692619, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -81702,12 +81702,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_DataHandler
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
+  currentHitPoints: 0
   equippedWeapon: {fileID: 0}
   playerAnimation: {fileID: 2125507438}
-  _moveSpeed: 5
+  playerCombat: {fileID: 0}
   _dodgeSpeedMod: 8
   _sprintSpeedMod: 8
   _attackSpeed: 5
+  attackBuffer: 0
 --- !u!61 &1890353277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -81869,6 +81871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatBase
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
+  currentHitPoints: 0
   equippedWeapon: {fileID: 0}
 --- !u!212 &1912053479
 SpriteRenderer:
@@ -81927,7 +81930,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1912053480
 Transform:
@@ -82066,7 +82069,7 @@ TilemapRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0.0024366379, y: 1.0595151, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 1.0692619, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -82768,7 +82771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!156049354 &1971643190
 Grid:
   m_ObjectHideFlags: 0
@@ -82895,7 +82898,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!95 &2125507437
 Animator:
@@ -82959,6 +82962,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatBase
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
+  currentHitPoints: 0
   equippedWeapon: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

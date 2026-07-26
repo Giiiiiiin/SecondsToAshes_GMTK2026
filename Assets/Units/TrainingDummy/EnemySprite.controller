@@ -1,12 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!91 &9100000
-AnimatorController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: EnemySprite
-  serializedVersion: 5
-  m_AnimatorParameters: []
-  m_AnimatorLayers: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:2950e7b9a7561272a8f9eff9149b9297fef5d6c1f308e35e18b048097c5d1579
+size 302
