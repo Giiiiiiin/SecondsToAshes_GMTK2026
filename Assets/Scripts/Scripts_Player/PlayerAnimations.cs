@@ -1,28 +1,23 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] private Player_DataHandler playerMovement;
+    [SerializeField] private Player_DataHandler playerData;
     [SerializeField] private GameObject playerObject; //Aran
+
     private AnimationHandler animationHandler;
 
     void Awake()
     {
-        cooldownMelee = 0;
         animationHandler = GetComponent<AnimationHandler>();
-    }
-
-    private void Start()
-    {
-        animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
     }
 
     void Update()
     {
-        mouseScreenPos = Mouse.current.position.value;
-        mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        HandleAnimation();
+        FaceDirection();
+    }
 
     private void HandleAnimation()
     {
@@ -41,53 +36,46 @@ public class PlayerAnimations : MonoBehaviour
         //dodge
         if (playerData.isDodging)
         {
-            cooldownMelee -= Time.deltaTime;
-        
-            if (cooldownMelee <= 0f)
-            {
-                cooldownMelee = 0f;
-            }
-        }
-        
-        if (playerMovement.isMelee)
-        {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_W);
-        
+            animationHandler.Play(PlayerAnimMovement.PlayerDodge);
             return;
         }
-        
-        if (playerMovement.isMoving)
+
+        //sprint
+        if (playerData.isMoving && playerData.isSprinting)
         {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_W);
-        
+            animationHandler.Play(PlayerAnimMovement.PlayerSprint);
             return;
         }
-        
-        if (playerMovement.isDodging || playerMovement.isSprinting)
+
+        //walk
+        if (playerData.isMoving)
         {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerSprint_E);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerSprint_W);
-        
+            animationHandler.Play(PlayerAnimMovement.PlayerWalk);
             return;
         }
-        
-        if (mouseDir.x > 0)
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_E);
-        else
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_W);
+
+        //idle (fallback)
+        animationHandler.Play(PlayerAnimMovement.PlayerIdle);
     }
 
-    public void Melee(float seconds)
+    private void FaceDirection()
     {
-        cooldownMelee += seconds / 5;
+        Vector3 localScale = transform.localScale;
+
+        if (playerData.rb.linearVelocity.x > 0f)
+        {
+            localScale.x = Mathf.Abs(localScale.x); // right
+        }
+        else if (playerData.rb.linearVelocity.x < 0f)
+        {
+            localScale.x = -Mathf.Abs(localScale.x); // left
+        }
+        base.transform.localScale = localScale;
+    }
+
+    public void EndDodge() 
+    {
+        playerData.EndDodge();
     }
 
     public void EndMelee()

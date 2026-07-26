@@ -16,12 +16,12 @@ public class AnimatedCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     
     private void OnEnable()
     {
-        Player_DataHandler.ShootGun.AddListener(() => StartCoroutine(ShootCursor()));
+        // Player_DataHandler.ShootGun.AddListener(() => StartCoroutine(ShootCursor()));
     }
     
     private void OnDisable()
     {
-        Player_DataHandler.ShootGun.RemoveListener(() => StartCoroutine(ShootCursor()));
+        // Player_DataHandler.ShootGun.RemoveListener(() => StartCoroutine(ShootCursor()));
     }
 
     public void OnPointerEnter(PointerEventData eventData)

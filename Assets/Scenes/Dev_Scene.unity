@@ -81054,7 +81054,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -81103,12 +81103,14 @@ MonoBehaviour:
   inventory: []
   currentHitPoints: 0
   equippedWeapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
-  playerAnimation: {fileID: 2125507438}
-  playerCombat: {fileID: 0}
+  gunWifeAnimation: {fileID: 0}
   _dodgeSpeedMod: 8
   _sprintSpeedMod: 8
-  _attackSpeed: 5
+  _comboIndex: 0
+  _canMelee: 0
+  _isMelee: 0
   attackBuffer: 0
+  _attackSpeed: 5
 --- !u!61 &1890353277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -82543,7 +82545,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -7008412969330441016, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
+  m_Sprite: {fileID: -5696449865914679075, guid: 4f7d844b3e056e2478a2697cf11cbe24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -82563,7 +82565,7 @@ Animator:
   m_GameObject: {fileID: 2125507434}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 35c9d37ecf5503b499cbc8b46a64fc64, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -82587,7 +82589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb56544ba67a0b49b6cfd80a62509d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimations
-  playerMovement: {fileID: 1890353276}
+  playerData: {fileID: 1890353276}
   playerObject: {fileID: 1890353272}
 --- !u!114 &2125507439
 MonoBehaviour:

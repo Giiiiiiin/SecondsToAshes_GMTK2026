@@ -19,40 +19,40 @@ public class GunWifeAnimations : MonoBehaviour
     }
     private void OnEnable()
     {
-        Player_DataHandler.ShootGun.AddListener(Shoot);
+      //  Player_DataHandler.ShootGun.AddListener(Shoot);
     }
     
     private void OnDisable()
     {
-        Player_DataHandler.ShootGun.RemoveListener(Shoot);
+       // Player_DataHandler.ShootGun.RemoveListener(Shoot);
     }
 
     void Update()
     {
         GetMouseDir();
         
-        if (mouseDir.x >= 0 && mouseDir.y >= 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Idle_NE);
-        else if (mouseDir.x >= 0 && mouseDir.y < 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Idle_SE);
-        else if (mouseDir.x < 0 && mouseDir.y < 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Idle_SW);
-        else if ((mouseDir.x < 0 && mouseDir.y >= 0))
-            animationHandler.Play(GunAnimMovement.GunWife_Idle_NW);
+        // if (mouseDir.x >= 0 && mouseDir.y >= 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Idle_NE);
+        // else if (mouseDir.x >= 0 && mouseDir.y < 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Idle_SE);
+        // else if (mouseDir.x < 0 && mouseDir.y < 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Idle_SW);
+        // else if ((mouseDir.x < 0 && mouseDir.y >= 0))
+        //     animationHandler.Play(GunAnimMovement.GunWife_Idle_NW);
     }
   
     public void Shoot()
     {
         GetMouseDir();
         
-        if (mouseDir.x >= 0 && mouseDir.y >= 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Attack_NE);
-        else if (mouseDir.x >= 0 && mouseDir.y < 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Attack_SE);
-        else if (mouseDir.x < 0 && mouseDir.y < 0)
-            animationHandler.Play(GunAnimMovement.GunWife_Attack_SW);
-        else if ((mouseDir.x < 0 && mouseDir.y >= 0))
-            animationHandler.Play(GunAnimMovement.GunWife_Attack_NW);
+        // if (mouseDir.x >= 0 && mouseDir.y >= 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Attack_NE);
+        // else if (mouseDir.x >= 0 && mouseDir.y < 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Attack_SE);
+        // else if (mouseDir.x < 0 && mouseDir.y < 0)
+        //     animationHandler.Play(GunAnimMovement.GunWife_Attack_SW);
+        // else if ((mouseDir.x < 0 && mouseDir.y >= 0))
+        //     animationHandler.Play(GunAnimMovement.GunWife_Attack_NW);
     }
     
     public void GetMouseDir()
@@ -65,6 +65,6 @@ public class GunWifeAnimations : MonoBehaviour
             mousePosition.y - transform.position.y);
     }
 
-    public void OnEndShootAnim() => playerDataHandler.EndShoot();
+    // public void OnEndShootAnim() => playerDataHandler.EndShoot();
 
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
@@ -15,6 +14,7 @@ public class Player_DataHandler : CombatBase
 
     [SerializeField] private float _dodgeSpeedMod = 8f;
     [SerializeField] private float _sprintSpeedMod = 8f;
+
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -178,7 +178,6 @@ public class Player_DataHandler : CombatBase
             if (cooldownShoot <= 0f)
             {
                 cooldownShoot = 0f;
-                _canShoot = true;
                 _isShooting = false;
             }
         }
@@ -309,21 +308,17 @@ public class Player_DataHandler : CombatBase
         if (!_canShoot || _isShooting || cooldownShoot > 0f || cooldownSwitch > 0f)
         {
             Debug.Log("Cannot Shoot Instance!");
+
             return;
         }
 
         Debug.Log("Shot!");
-        ShootGun.Invoke();
-        
         _isShooting = true;
+
         cooldownShoot += baseCooldown;
         cooldownSwitch = baseCooldown / 2;
-    }
 
-    public void EndShoot()
-    {
-        _isShooting = false;
-        _canShoot = false;
+        // gunWifeAnimation.Shoot(cooldownShoot);
     }
 
     public override void Attack()
