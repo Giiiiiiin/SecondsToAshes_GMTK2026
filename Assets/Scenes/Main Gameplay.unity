@@ -1434,15 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c41b9c3131c65594fb491968021d4c06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GunWifeAnimations
-  playerMovement: {fileID: 0}
-  sprite_NE: {fileID: -982904232830982447, guid: e80facf1c1397bd4393e72dd90d153e4, type: 3}
-  sprite_SE: {fileID: -5409570386352685021, guid: e80facf1c1397bd4393e72dd90d153e4, type: 3}
-  sprite_SW: {fileID: 4035959289877228764, guid: e80facf1c1397bd4393e72dd90d153e4, type: 3}
-  sprite_NW: {fileID: -350908408369970039, guid: e80facf1c1397bd4393e72dd90d153e4, type: 3}
-  spriteShoot_NE: {fileID: -7763475090823894447, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
-  spriteShoot_SE: {fileID: -407791054, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
-  spriteShoot_SW: {fileID: -7008412969330441016, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
-  spriteShoot_NW: {fileID: 302641331129538988, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
+  playerDataHandler: {fileID: 0}
 --- !u!212 &342453958
 SpriteRenderer:
   serializedVersion: 2
@@ -17317,15 +17309,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_DataHandler
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
+  currentHitPoints: 0
   equippedWeapon: {fileID: 11400000, guid: 969c0a19681ebd346ade8f38f309fe75, type: 2}
-  gunWifeAnimation: {fileID: 342453957}
+  playerAnimation: {fileID: 0}
+  playerCombat: {fileID: 0}
   _dodgeSpeedMod: 30
   _sprintSpeedMod: 40
-  _comboIndex: 0
-  _canMelee: 0
-  _isMelee: 0
-  attackBuffer: 0
   _attackSpeed: 5
+  attackBuffer: 0
 --- !u!61 &1890353277
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17488,6 +17479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatBase
   combatData: {fileID: 11400000, guid: afde73e9592f55b4da828993ec628e8c, type: 2}
   inventory: []
+  currentHitPoints: 0
   equippedWeapon: {fileID: 0}
 --- !u!212 &1912053479
 SpriteRenderer:
@@ -17712,7 +17704,7 @@ TilemapRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0.0024366379, y: 1.0595151, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 1.0692619, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -18551,12 +18543,12 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5696449865914679075, guid: 4f7d844b3e056e2478a2697cf11cbe24, type: 3}
+  m_Sprite: {fileID: -7008412969330441016, guid: 7e2286ebb9bbc2d4c9f109ef48a5b621, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.59375, y: 0.90625}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -18571,7 +18563,7 @@ Animator:
   m_GameObject: {fileID: 2125507434}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 35c9d37ecf5503b499cbc8b46a64fc64, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -18595,7 +18587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb56544ba67a0b49b6cfd80a62509d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimations
-  playerData: {fileID: 1890353276}
+  playerMovement: {fileID: 0}
   playerObject: {fileID: 1890353272}
 --- !u!114 &2125507441
 MonoBehaviour:
