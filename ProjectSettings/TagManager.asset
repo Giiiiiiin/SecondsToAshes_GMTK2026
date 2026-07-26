@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - TilemapCollider
   - Water
   - UI
   - 
@@ -44,6 +44,9 @@ TagManager:
   - name: Ground
     uniqueID: 2892056627
     locked: 0
+  - name: Wall
+    uniqueID: 1943223067
+    locked: 0
   - name: WalkFront
     uniqueID: 2838879291
     locked: 0
@@ -58,6 +61,9 @@ TagManager:
     locked: 0
   - name: Decor
     uniqueID: 99295075
+    locked: 0
+  - name: UI
+    uniqueID: 2827689495
     locked: 0
   m_RenderingLayers:
   - Default

@@ -1,39 +1,61 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class GunWifeAnimations : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
-    private SpriteRenderer sp;
+    [SerializeField] private Player_DataHandler playerDataHandler;
+    private AnimationHandler animationHandler;
 
     Vector2 mouseScreenPos;
     Vector3 mousePosition;
     Vector2 mouseDir;
-
-    float cooldownShoot;
+    
     bool default_sprite;
-
-    [Header("Aim")]
-    [SerializeField] private Sprite sprite_NE;
-    [SerializeField] private Sprite sprite_SE;
-    [SerializeField] private Sprite sprite_SW;
-    [SerializeField] private Sprite sprite_NW;
-
-    [Header("Attacks")]
-    [SerializeField] private Sprite spriteShoot_NE;
-    [SerializeField] private Sprite spriteShoot_SE;
-    [SerializeField] private Sprite spriteShoot_SW;
-    [SerializeField] private Sprite spriteShoot_NW;
-
+    
     void Awake()
     {
-        sp = GetComponent<SpriteRenderer>();
-        sp.sprite = sprite_NE;
-
-        cooldownShoot = 0f;
+        animationHandler = GetComponent<AnimationHandler>();
+    }
+    private void OnEnable()
+    {
+        Player_DataHandler.ShootGun.AddListener(Shoot);
+    }
+    
+    private void OnDisable()
+    {
+        Player_DataHandler.ShootGun.RemoveListener(Shoot);
     }
 
     void Update()
+    {
+        GetMouseDir();
+        
+        if (mouseDir.x >= 0 && mouseDir.y >= 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Idle_NE);
+        else if (mouseDir.x >= 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Idle_SE);
+        else if (mouseDir.x < 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Idle_SW);
+        else if ((mouseDir.x < 0 && mouseDir.y >= 0))
+            animationHandler.Play(GunAnimMovement.GunWife_Idle_NW);
+    }
+  
+    public void Shoot()
+    {
+        GetMouseDir();
+        
+        if (mouseDir.x >= 0 && mouseDir.y >= 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_NE);
+        else if (mouseDir.x >= 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_SE);
+        else if (mouseDir.x < 0 && mouseDir.y < 0)
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_SW);
+        else if ((mouseDir.x < 0 && mouseDir.y >= 0))
+            animationHandler.Play(GunAnimMovement.GunWife_Attack_NW);
+    }
+    
+    public void GetMouseDir()
     {
         mouseScreenPos = Mouse.current.position.value;
         mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
@@ -41,61 +63,8 @@ public class GunWifeAnimations : MonoBehaviour
         mouseDir = new Vector2(
             mousePosition.x - transform.position.x,
             mousePosition.y - transform.position.y);
-
-        if (cooldownShoot > 0f)
-        {
-            cooldownShoot -= Time.deltaTime;
-
-            if (cooldownShoot <= 0f)
-            {
-                cooldownShoot = 0f;
-                default_sprite = true;
-            }
-        }
-
-        if (mouseDir.x >= 0 && mouseDir.y >= 0)
-        {
-            if (default_sprite)
-                sp.sprite = sprite_NE;
-        }
-        else if (mouseDir.x >= 0 && mouseDir.y < 0)
-        {
-            if (default_sprite)
-                sp.sprite = sprite_SE;
-        }
-        else if (mouseDir.x < 0 && mouseDir.y < 0)
-        {
-            if (default_sprite)
-                sp.sprite = sprite_SW;
-        }
-        else
-        {
-            if (default_sprite)
-                sp.sprite = sprite_NW;
-        }
     }
 
-    public void Shoot(float seconds)
-    {
-        default_sprite = false;
+    public void OnEndShootAnim() => playerDataHandler.EndShoot();
 
-        if (mouseDir.x >= 0 && mouseDir.y >= 0)
-        {
-            sp.sprite = spriteShoot_NE;
-        }
-        else if (mouseDir.x >= 0 && mouseDir.y < 0)
-        {
-            sp.sprite = spriteShoot_SE;
-        }
-        else if (mouseDir.x < 0 && mouseDir.y < 0)
-        {
-            sp.sprite = spriteShoot_SW;
-        }
-        else
-        {
-            sp.sprite = spriteShoot_NW;
-        }
-
-        cooldownShoot += seconds / 5;
-    }
 }
