@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e975e19a0ff8949ab6abb3f2e2c640, type: 3}
   m_Name: BareHands
   m_EditorClassIdentifier: Assembly-CSharp::CombatWeapon_ScriptableObject
-  Source: {fileID: 0}
+  Source: {fileID: 21300000, guid: 5d087048324a2524d839ca240057c616, type: 3}
+  attackBufferList:
+  - 0
   attackList:
-  - {fileID: 0}
+  - {fileID: 3540754826820544865, guid: 15cac12356e40c54c840ee9d129f50ef, type: 3}
+  offsetAttackList:
+  - {x: 0.22, y: 0, z: 0}
   UnitName: BareHands
   UnitSerialNumber: W000
   attackDamage: 0
   attackSpeed: 0
-  armorDefense: 0
-  armorPenetration: 0
   hitPoints: 0
   unitSpeed: 0

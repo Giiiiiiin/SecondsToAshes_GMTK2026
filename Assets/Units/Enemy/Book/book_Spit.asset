@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8e975e19a0ff8949ab6abb3f2e2c640, type: 3}
+  m_Name: book_Spit
+  m_EditorClassIdentifier: Assembly-CSharp::CombatWeapon_ScriptableObject
+  Source: {fileID: -769486727623976550, guid: f90cf8389754dc34d846378a9d2023e3, type: 3}
+  attackBufferList:
+  - 0
+  attackList:
+  - {fileID: 7838402380876731067, guid: eef91dde72db02940a13039c023a9d02, type: 3}
+  offsetAttackList:
+  - {x: 0.2, y: -0.3, z: 0}
+  UnitName: Spit
+  UnitSerialNumber: W003
+  attackDamage: 0
+  attackSpeed: 0
+  hitPoints: 0
+  unitSpeed: 0
