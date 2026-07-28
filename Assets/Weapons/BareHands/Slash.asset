@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CombatWeapon_ScriptableObject
   Source: {fileID: 21300000, guid: 5d087048324a2524d839ca240057c616, type: 3}
   attackBufferList:
+  - 3
   - 2
   - 1
-  - 1
   attackList:
-  - {fileID: 3540754826820544865, guid: c8670342d3522a445b7ba8722a7ecedd, type: 3}
+  - {fileID: 3540754826820544865, guid: c575f021d07c967449382c9c92ab44b7, type: 3}
+  - {fileID: 3540754826820544865, guid: cd44c0b114f13d645a348a73debd4ae4, type: 3}
   - {fileID: 3540754826820544865, guid: 9ffe5da7178fb8c4a958a167e7792ba4, type: 3}
-  - {fileID: 3540754826820544865, guid: 15cac12356e40c54c840ee9d129f50ef, type: 3}
   offsetAttackList:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}

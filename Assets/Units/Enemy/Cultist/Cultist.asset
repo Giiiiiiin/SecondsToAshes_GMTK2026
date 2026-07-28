@@ -16,7 +16,7 @@ MonoBehaviour:
   Weapon: {fileID: 11400000, guid: 6637b186ac7cc484e8a7a348ef3a292b, type: 2}
   UnitName: Cultist
   UnitSerialNumber: U001
-  attackDamage: 1
-  attackSpeed: 1
+  attackDamage: 10
+  attackSpeed: 10
   hitPoints: 10
-  unitSpeed: 5
+  unitSpeed: 2

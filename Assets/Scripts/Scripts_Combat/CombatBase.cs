@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class CombatBase : MonoBehaviour
+public abstract class CombatBase : MonoBehaviour
 {
     [SerializeField] protected CombatUnit_ScriptableObject combatData;
     [SerializeField] protected List<GameObject> inventory;
@@ -12,6 +12,9 @@ public class CombatBase : MonoBehaviour
     public GameObject Source => gameObject;
     public CombatWeapon_ScriptableObject equippedWeapon;
     protected float attackCooldown = 0f;
+    
+    public UnityEvent OnDamageEffect = new UnityEvent();
+    
     public CombatUnit_ScriptableObject UnitData
     {
         get { return combatData; }
@@ -77,31 +80,15 @@ public class CombatBase : MonoBehaviour
         Weapon = SearchInventoryWeapon(weaponName);
     }
 
-    public virtual void Attack()
+    protected abstract void Attack();
+    public abstract void OnReceiveDamage(CombatBase source, float damage);
+    protected abstract void OnDeath();
+    
+    //unsure if I want this here, because its a vfx thing, probably should just be its own seperate thing
+    public virtual IEnumerator SpriteHitEffect(SpriteRenderer sr)
     {
-        // Base function that is called by all Units to Attack
-    }
-
-    public virtual void OnHit()
-    {
-        // Base function that is called by all Units if thir Attacks hit a valid target
-    }
-
-    public virtual void OnDamage(CombatBase source, CombatBase target)
-    {
-        PlayerMarker playerMarker = target.GetComponent<PlayerMarker>();
-
-        if (CombatManager.Instance != null && playerMarker != true)
-        {
-            CombatManager.Instance.DealDamage(source, target);
-        }
-        else
-        {
-            WifeSoul.instance.ReduceWifeSoul(combatData.attackDamage);
-        }
-
-
-        
-        // Base function that is called by all Units if they are Damaged by an Attack
+        sr.color = Color.red;
+        yield return new WaitForSeconds(0.5f);
+        sr.color = Color.white;
     }
 }

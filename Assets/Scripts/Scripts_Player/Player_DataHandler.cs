@@ -9,7 +9,7 @@ using UnityEngine.Windows;
 public class Player_DataHandler : CombatBase
 {
     [SerializeField] private GunWifeAnimations gunWifeAnimation;
-
+    
     private Vector2 savedDir = Vector2.zero; // last faced direction
     private bool sprintButtonDown = false; //check if sprint button is held down
 
@@ -153,11 +153,23 @@ public class Player_DataHandler : CombatBase
 
     private void OnEnable()
     {
+        if (gameInput == null)
+        {
+            Debug.LogError("Input System not Instantiated");
+            return;
+        }
+        
         gameInput.Enable();
     }
 
     private void OnDisable()
     {
+        if (gameInput == null)
+        {
+            Debug.LogError("Input System not Instantiated");
+            return;
+        }
+        
         gameInput.Disable();
     }
 
@@ -333,64 +345,72 @@ public class Player_DataHandler : CombatBase
         canShoot = true;
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
-        base.Attack();
-
         if (!_canMelee || _isMelee)
         {
             Debug.Log("Cannot Melee Instance!");
-
             return;
         }
-
-        Debug.Log("Swing!");
-
-        //something about the combo timer here
-
-        _canMelee = false;
+        
+        //Logic
         _comboIndex++;
-
         if (_comboIndex > 3)
             _comboIndex = 1;
 
+        _canMelee = false;
         _isLunging = true;
         _isMelee = true;
-
-        StartCoroutine(Melee());
-
+        
         cooldownSwitch = baseCooldown / 2;
+        
+        BeginMelee();
+        Debug.Log("Melee Attack has been Instantiated!");
     }
-
 
     private void LungeOnAttack()
     {
         Vector2 dir = gunWifeAnimation.GetMouseDir();
-
-        // lunge override 
         if (_isLunging)
         {
             _isLunging = false;
             _rb.linearVelocity = dir * _lungeForce;
-            return;
         }
     }
 
-    private IEnumerator Melee() // controls melee attack timing
+    private void BeginMelee()
     {
         _canMove = false;
         _canDodge = false;
         _isMelee = true;
-
-        yield return null;
+        
+        //should move the attack object instantiation here instead
     }
 
-    public void endMelee()
+    public void EndMelee()
     {
         _canMove = true;
         _canDodge = true;
         _canMelee = true;
         _isMelee = false;
+    }
+
+    public override void OnReceiveDamage(CombatBase source, float damage)
+    {
+        OnDamageEffect.Invoke();
+        
+        WifeSoul.instance.ReduceWifeSoul(damage);
+        
+        if (WifeSoul.instance.IsWifeSoulDepleted())
+        {
+            OnDeath();
+            GameManager.instance.LoseGame();
+        }
+    }
+
+    protected override void OnDeath()
+    {
+       DisablePlayer();
     }
 
     public void DisablePlayer()
@@ -401,5 +421,4 @@ public class Player_DataHandler : CombatBase
         _canSprint = false;
         _canMelee = true;
     }
-
 }

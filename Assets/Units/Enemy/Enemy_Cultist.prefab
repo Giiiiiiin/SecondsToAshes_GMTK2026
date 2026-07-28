@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
   enemyLogic: {fileID: 89763888511013013}
+  spriteRenderer: {fileID: 7871470504327605632}
   attachJoint: 1
   comboAnimations: []
 --- !u!114 &3278430263288741814
@@ -194,6 +195,9 @@ MonoBehaviour:
   inventory: []
   currentHitPoints: 0
   equippedWeapon: {fileID: 11400000, guid: 6637b186ac7cc484e8a7a348ef3a292b, type: 2}
+  OnDamageEffect:
+    m_PersistentCalls:
+      m_Calls: []
   idleAnimation: idle_Cultist
   walkAnimation: walk_Cultist
   initialCombatAnimation: attack_Cultist

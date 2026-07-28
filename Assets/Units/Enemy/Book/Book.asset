@@ -16,7 +16,7 @@ MonoBehaviour:
   Weapon: {fileID: 11400000, guid: 5759502aacbbc0c49aae4834e0822fc3, type: 2}
   UnitName: Book
   UnitSerialNumber: U003
-  attackDamage: 1
-  attackSpeed: 2
+  attackDamage: 10
+  attackSpeed: 10
   hitPoints: 5
-  unitSpeed: 8
+  unitSpeed: 2

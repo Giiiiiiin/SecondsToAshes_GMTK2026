@@ -46,8 +46,6 @@ public class BaseEnemyLogic : CombatBase
     private void Update()
     {
         base.Update();
-        Debug.Log("Attack Cooldown: " + attackCooldown);
-
         if (playerMarker == null)
             playerMarker = PlayerMarker.Instance;
 
@@ -67,7 +65,7 @@ public class BaseEnemyLogic : CombatBase
             if (idleAnimation != null && idleAnimation != "")
                 animationHandler.Play(idleAnimation);
         }
-        else
+        else if (distance < circleAttackRadius)  //If enemy is already within attack range, stop attacking.
         {
             Vector2 velocity = Vector2.zero;
             velocity = targetDir * combatData.unitSpeed;
@@ -115,23 +113,39 @@ public class BaseEnemyLogic : CombatBase
         Debug.Log("Add Cooldown called: " + attackCooldown);
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
         if (attackCooldown > 0f)
-        {
-            Debug.Log("Attack is on Cooldown");
             return;
-        }
-        AddCooldown();
-
-        Debug.Log("BaseEnemyLogic Attack: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
 
         isAttacking = true;
-
         if (initialCombatAnimation != null && initialCombatAnimation != "")
         {
+            animationHandler.Play(initialCombatAnimation); 
             Debug.Log("Animation Called");
-            animationHandler.Play(initialCombatAnimation);
         }
+        
+        AddCooldown();
+        Debug.Log("BaseEnemyLogic Attack: " + gameObject.name + " | AttackCooldown: " + attackCooldown);
+    }
+
+    public override void OnReceiveDamage(CombatBase source, float targetHitPoints)
+    {
+        if (source.GetComponent<PlayerMarker>() != null) return;
+        
+        currentHitPoints = targetHitPoints;
+        OnDamageEffect.Invoke();
+        
+        if (currentHitPoints <= 0)
+            OnDeath();
+    }
+
+    protected override void OnDeath()
+    {
+        if (CombatManager.Instance == null)
+            Debug.LogError("CombatManager not found!");
+            
+        CombatManager.Instance.OnEnemyDeath();
+        Destroy(gameObject);
     }
 }

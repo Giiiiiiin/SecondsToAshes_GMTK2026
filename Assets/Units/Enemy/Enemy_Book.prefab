@@ -124,6 +124,9 @@ MonoBehaviour:
   inventory: []
   currentHitPoints: 0
   equippedWeapon: {fileID: 11400000, guid: 5759502aacbbc0c49aae4834e0822fc3, type: 2}
+  OnDamageEffect:
+    m_PersistentCalls:
+      m_Calls: []
   idleAnimation: idle_Book
   walkAnimation: idle_Book
   initialCombatAnimation: attack_Book
@@ -248,6 +251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
   enemyLogic: {fileID: 1341860251832723586}
+  spriteRenderer: {fileID: 384669343033265006}
   attachJoint: 0
   comboAnimations: []
 --- !u!95 &7904345708126031286

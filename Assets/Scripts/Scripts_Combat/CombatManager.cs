@@ -21,24 +21,15 @@ public class CombatManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    private void CalculateDamage(CombatBase sourceUnit, CombatBase targetUnit)
+    private float CalculateDamage(CombatBase sourceUnit, CombatBase targetUnit)
     {
         float damage = sourceUnit.UnitData.attackDamage - targetUnit.currentHitPoints;
-        damage = Mathf.Max(damage, 0);
-        targetUnit.currentHitPoints -= damage;
+        return Mathf.Max(damage, 0);
     }
 
     public void DealDamage(CombatBase sourceUnit, CombatBase targetUnit)
     {
-        CalculateDamage(sourceUnit, targetUnit);
-
-        if (targetUnit.currentHitPoints <= 0)
-        {
-            if (gameObject.GetComponent<BaseEnemyLogic>())
-                OnEnemyDeath();
-            Destroy(targetUnit.gameObject);
-        }
-
+        targetUnit.OnReceiveDamage(sourceUnit, CalculateDamage(sourceUnit, targetUnit));
         Debug.Log($"{sourceUnit.name} dealt {sourceUnit.UnitData.attackDamage} damage to {targetUnit.name}. Remaining HP: {targetUnit.currentHitPoints}");
     }
 
@@ -48,16 +39,16 @@ public class CombatManager : MonoBehaviour
         totalEnemies = enemyCount;
         currDefeatedEnemies = 0;
     }
-
-    private void OnEnemyDeath()
+    public void OnEnemyDeath()
     {
         currDefeatedEnemies++;
+        
         if (CheckEnemyDeathCount())
             floor.WinFloor();   
     }
-
     private bool CheckEnemyDeathCount()
     {
+        Debug.Log($"Enemies Defeated: {currDefeatedEnemies}/{totalEnemies}");
         return currDefeatedEnemies >= totalEnemies;
     }
 }

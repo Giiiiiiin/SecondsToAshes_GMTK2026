@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private Player_DataHandler playerData;
-    [SerializeField] private GameObject playerObject; //Aran
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private AnimationHandler animationHandler;
     private GameObject instanceCombo;
@@ -96,7 +96,7 @@ public class PlayerAnimations : MonoBehaviour
     public void EndMelee()
     {
         EndCombo();
-        playerData.endMelee();
+        playerData.EndMelee();
       
     }
     
@@ -109,28 +109,47 @@ public class PlayerAnimations : MonoBehaviour
             return;
         }
 
+        //Move these to playuerdatahandler
         GameObject c = Instantiate(playerData.equippedWeapon.attackList[playerData.comboIndex-1], playerData.transform.position + (playerData.equippedWeapon.offsetAttackList[playerData.comboIndex-1] * attackDirection), Quaternion.identity, playerData.transform);
         instanceCombo = c;
         FaceDirection(c);
-        
-        Debug.Log("Instantiated.");
 
-        AttackObject attackObject = gameObject.GetComponent<AttackObject>();
+        AttackObject attackObject = c.GetComponent<AttackObject>();
         if (attackObject != null)
         {
             attackObject.sourceUnit = playerData;
             attackObject._fixedJoint.connectedBody = playerData.GetComponent<Rigidbody2D>();  
         }
+        
+        Debug.Log("Instantiated Attack Object");
     }
 
     private void EndCombo()
     {
         Debug.Log("EndCombo");
+        
+        //move these to playerdatahandler
         if (instanceCombo != null)
         {
             Destroy(instanceCombo.gameObject);
+            Debug.Log("Destroyed Attack");
             bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
         }
         playerData.isMelee = false;
+    }
+    
+    private void DamageEffect()
+    {
+        StartCoroutine(playerData.SpriteHitEffect(spriteRenderer));
+    }
+    
+    private void OnEnable()
+    {
+        playerData.OnDamageEffect.AddListener(DamageEffect);
+    }
+
+    private void OnDisable()
+    {
+        playerData.OnDamageEffect.RemoveListener(DamageEffect);
     }
 }

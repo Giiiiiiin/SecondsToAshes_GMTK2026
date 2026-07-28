@@ -6,6 +6,7 @@ public class WifeSoul : MonoBehaviour
     [SerializeField] private float initial_WifeSoul;
     [SerializeField] private float resource_WifeSoul;
     [SerializeField] private HourGlass glass;
+    [SerializeField] private CountdownTimer timer;
     private bool canTick = false;
     
     public static WifeSoul instance;
@@ -39,11 +40,7 @@ public class WifeSoul : MonoBehaviour
     {
         resource_WifeSoul -= value;
         glass.Tick();
-        
-        if (IsWifeSoulDepleted())
-        {
-            GameManager.instance.LoseGame();
-        }
+       // timer.TickCountdownTimer();
     }
     
     public void IncreaseWifeSoul(float value)
@@ -61,5 +58,4 @@ public class WifeSoul : MonoBehaviour
         if (canTick)
             ReduceWifeSoul(Time.deltaTime);
     }
-    
 }

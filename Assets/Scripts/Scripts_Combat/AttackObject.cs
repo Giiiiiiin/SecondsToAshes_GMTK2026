@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackObject : MonoBehaviour
@@ -9,36 +10,31 @@ public class AttackObject : MonoBehaviour
     private Collider2D _collider;
     private Rigidbody2D _rigidbody;
 
+    private List<CombatBase> attackedUnits;
+
     private void Awake()
     {
-        Debug.Log("AttackObject SourceUnit Awake: " + sourceUnit.gameObject);
-
+        attackedUnits = new List<CombatBase>();
         _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _fixedJoint = GetComponent<FixedJoint2D>();
     }
-
-    private void Start()
-    {
-        Debug.Log("AttackObject SourceUnit Start: " + sourceUnit.gameObject);
-        
-    }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("AttackObject SourceUnit: " + sourceUnit.name);
         Debug.Log("AttackObject CollisionUnit: " + collision.gameObject);
 
-        CombatBase unit = collision.gameObject.GetComponent<CombatBase>();
+        CombatBase targetUnit = collision.gameObject.GetComponent<CombatBase>();
 
-        if (unit != null && unit != sourceUnit)
+        if (targetUnit == null) return;
+        
+        if (attackedUnits.Contains(targetUnit))
+            Debug.Log($"{targetUnit.name} has already been attacked");
+        else if (targetUnit != sourceUnit)
         {
-            sourceUnit.OnHit();
-            unit.OnDamage(sourceUnit, unit);
-
-            if (destroyOnHit)
-            {
-                Destroy(gameObject);
-            }
+            CombatManager.Instance.DealDamage(sourceUnit, targetUnit);
+            attackedUnits.Add(targetUnit);
         }
     }
 }
