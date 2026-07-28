@@ -226,7 +226,7 @@ public class Player_DataHandler : CombatBase
         Vector2 movement = moveInput.normalized;
         Vector2 velocity = Vector2.zero;
 
-        if (movement.magnitude > 1f)
+        if (movement.magnitude > 1f && _canMove)
             movement.Normalize();
 
         if (movement != Vector2.zero)
@@ -257,7 +257,7 @@ public class Player_DataHandler : CombatBase
 
     private void InputSprint() // also executes dash if able
     {
-        if (gameInput.Player.Dodge.IsPressed())
+        if (gameInput.Player.Dodge.IsPressed() && _canDodge)
         {
             _isSprinting = true;
             if (canDodge && !sprintButtonDown)
@@ -314,10 +314,10 @@ public class Player_DataHandler : CombatBase
         float shoot = gameInput.Player.Shoot.ReadValue<float>();
         float melee = gameInput.Player.Melee.ReadValue<float>();
 
-        if (shoot > 0f)
+        if (shoot > 0f && _canShoot)
             TryShoot();
 
-        if (melee > 0f)
+        if (melee > 0f && _canMelee)
             Attack();
     }
 
@@ -398,14 +398,7 @@ public class Player_DataHandler : CombatBase
     public override void OnReceiveDamage(CombatBase source, float damage)
     {
         OnDamageEffect.Invoke();
-        
-        WifeSoul.instance.ReduceWifeSoul(damage);
-        
-        if (WifeSoul.instance.IsWifeSoulDepleted())
-        {
-            OnDeath();
-            GameManager.instance.LoseGame();
-        }
+        WifeSoul.instance.ReduceWifeSoul(damage, false, true);
     }
 
     protected override void OnDeath()
@@ -419,6 +412,11 @@ public class Player_DataHandler : CombatBase
         _canDodge = false;
         _canShoot = false;
         _canSprint = false;
-        _canMelee = true;
+        _canMelee = false;
+        _isMoving = false;
+        _isSprinting = false;
+        _isDodging = false;
+        _isMelee = false;
+        _isShooting = false;
     }
 }

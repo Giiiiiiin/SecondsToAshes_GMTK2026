@@ -8,30 +8,39 @@ public class CountdownTimer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txt;
     [SerializeField] private TextMeshProUGUI txtAdjust;
     [SerializeField] private Color[] color;
+    [SerializeField] private float textTransition;
 
     private void Awake()
     {
         txtAdjust.gameObject.SetActive(false);
     }
-
+    
     public void TickCountdownTimer() => txt.text = ConvertSecondsToTimeSpan(WifeSoul.instance.Resource_WifeSoul);
-
+    
     public void TickAdjustmentTimer(bool operation, float val)
     {
-        txtAdjust.text = ConvertSecondsToTimeSpan(val);
-        txtAdjust.color = operation ? color[0] : color[1];
+        if (LeanTween.isTweening(txtAdjust.gameObject))
+            LeanTween.cancel(txtAdjust.gameObject);
         
-        // var fadeoutcolor = color;
-        // fadeoutcolor.a = 0;
-        // LeanTween.value(gameObject, updateValueExampleCallback, fadeoutcolor, color, 1f).setEase(LeanTweenType.easeOutElastic).setDelay(2f);
+        //1 = addition; 0 = subtraction
+        txtAdjust.gameObject.SetActive(true);
+        txtAdjust.text = operation ? "+" : "-" + ConvertSecondsToTimeSpan(val);
+        
+        Color currCol = txtAdjust.color = operation ? color[0] : color[1]; 
+        txtAdjust.color = currCol;
+        
+        Color fadeoutColor = currCol;
+        fadeoutColor.a = 0;
+  
+        LeanTween.value(txtAdjust.gameObject, ChangeAdjustmentAlpha, currCol, fadeoutColor, textTransition)
+            .setEaseOutElastic();
+        LeanTween.value(txtAdjust.gameObject, ChangeAdjustmentAlpha, fadeoutColor, currCol, textTransition)
+            .setEaseOutElastic().setDelay(3f).setOnComplete(() => txtAdjust.gameObject.SetActive(false));
     }
 
-public void ChangeAdjustmentAlpha(Color alpha)
-    {
-        txtAdjust.color = alpha;
-    }
+    private void ChangeAdjustmentAlpha(Color val) => txtAdjust.color = val;
 
-    public static string ConvertSecondsToTimeSpan(float totalSeconds)
+    private static string ConvertSecondsToTimeSpan(float totalSeconds)
     {
         float m = TimeSpan.FromSeconds(totalSeconds).Minutes;
         float s = TimeSpan.FromSeconds(totalSeconds).Seconds;
@@ -40,4 +49,3 @@ public void ChangeAdjustmentAlpha(Color alpha)
         return m.ToString("00") + ":" + s.ToString("00") + ":" + ms.ToString("00");
     }
 }
-

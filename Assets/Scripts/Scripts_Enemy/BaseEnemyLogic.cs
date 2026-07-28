@@ -65,7 +65,7 @@ public class BaseEnemyLogic : CombatBase
             if (idleAnimation != null && idleAnimation != "")
                 animationHandler.Play(idleAnimation);
         }
-        else if (distance < circleAttackRadius)  //If enemy is already within attack range, stop attacking.
+        else // (distance < circleAttackRadius)  //If enemy is already within attack range, stop attacking.
         {
             Vector2 velocity = Vector2.zero;
             velocity = targetDir * combatData.unitSpeed;

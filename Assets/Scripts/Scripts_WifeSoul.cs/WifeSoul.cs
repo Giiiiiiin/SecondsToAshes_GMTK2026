@@ -36,11 +36,23 @@ public class WifeSoul : MonoBehaviour
         canTick = true;
     }
 
-    public void ReduceWifeSoul(float value)
+    public void ReduceWifeSoul(float value, bool operation = false, bool callout = false)
     {
-        resource_WifeSoul -= value;
+        if (!canTick) return;
+        
+        resource_WifeSoul = Mathf.Max(resource_WifeSoul-value, 0f);
+        
+        //Update UI
+        if (callout)
+            timer.TickAdjustmentTimer(operation, value);
+        timer.TickCountdownTimer();
         glass.Tick();
-       // timer.TickCountdownTimer();
+
+        if (IsWifeSoulDepleted())
+        {
+            canTick = false;
+            GameManager.instance.LoseGame();
+        }
     }
     
     public void IncreaseWifeSoul(float value)
