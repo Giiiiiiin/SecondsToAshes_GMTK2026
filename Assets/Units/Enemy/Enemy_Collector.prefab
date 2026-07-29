@@ -107,7 +107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
   enemyLogic: {fileID: 2156447995440475015}
-  spriteRenderer: {fileID: 7079909286257364056}
   attachJoint: 0
   comboAnimations: []
 --- !u!114 &8523091097784153711
@@ -162,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3663376502555858796
 Transform:
   m_ObjectHideFlags: 0

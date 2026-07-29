@@ -131,7 +131,7 @@ public class BaseEnemyLogic : CombatBase
 
     public override void OnReceiveDamage(CombatBase source, float targetHitPoints)
     {
-        if (source.GetComponent<PlayerMarker>() != null) return;
+        if (source.GetComponent<PlayerMarker>() == null) return;
         
         currentHitPoints = targetHitPoints;
         OnDamageEffect.Invoke();

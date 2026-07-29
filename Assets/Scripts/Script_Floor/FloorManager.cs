@@ -25,14 +25,17 @@ public class FloorManager : MonoBehaviour
 
     private IEnumerator TransitionFloors()
     {
-        yield return FadeRoutine(canvasGroup.alpha, 1f, floorTranstionDuration);
-        
         if (currFloor >= 0)
+        {
+            yield return FadeRoutine(canvasGroup.alpha, 1f, floorTranstionDuration);
             floors[currFloor-1].gameObject.SetActive(false);
-        if (!floors[currFloor].gameObject.activeSelf && currFloor < floors.Count)
-            floors[currFloor].gameObject.SetActive(true);
+        }
 
-        yield return (FadeRoutine(canvasGroup.alpha, 0f, floorTranstionDuration));
+        if (!floors[currFloor].gameObject.activeSelf && currFloor < floors.Count)
+        {
+            floors[currFloor].gameObject.SetActive(true);
+            yield return (FadeRoutine(canvasGroup.alpha, 0f, floorTranstionDuration));
+        }
     }
     
     private IEnumerator FadeRoutine(float startAlpha, float targetAlpha, float duration)

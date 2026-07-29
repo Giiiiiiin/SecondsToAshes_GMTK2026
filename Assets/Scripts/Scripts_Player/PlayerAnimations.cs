@@ -112,6 +112,7 @@ public class PlayerAnimations : MonoBehaviour
         //Move these to playuerdatahandler
         GameObject c = Instantiate(playerData.equippedWeapon.attackList[playerData.comboIndex-1], playerData.transform.position + (playerData.equippedWeapon.offsetAttackList[playerData.comboIndex-1] * attackDirection), Quaternion.identity, playerData.transform);
         instanceCombo = c;
+        
         FaceDirection(c);
 
         AttackObject attackObject = c.GetComponent<AttackObject>();
@@ -131,7 +132,9 @@ public class PlayerAnimations : MonoBehaviour
         //move these to playerdatahandler
         if (instanceCombo != null)
         {
+            instanceCombo.gameObject.SetActive(false);
             Destroy(instanceCombo.gameObject);
+            
             Debug.Log("Destroyed Attack");
             bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
         }
