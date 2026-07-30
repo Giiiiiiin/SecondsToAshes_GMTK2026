@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AnimatedCursor" Collapsed="true">
+    <Position X="10" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAACAAAAAAAAAAAAAAAAAhAAAIAAAAAUAACAA=</HashCode>
+      <FileName>Assets\Scripts\AnimatedCursor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="AnimationHandler">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Units\AnimationHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AttackObject">
+    <Position X="22.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAEAAQAACACAAAAAAEAAAAAAAAAAACAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Combat\AttackObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BaseEnemyLogic">
+    <Position X="24.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CCQAEEAIAAwAQEgMAEAAAIAAEIQgABEAQAgABACAAEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Enemy\BaseEnemyLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CameraShake" Collapsed="true">
+    <Position X="17.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAFAAAAACAAAEQAAACIAAAAAQAQCEA=</HashCode>
+      <FileName>Assets\Scripts\Script_Camera\CameraShake.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CombatManager">
+    <Position X="34" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgEAAQAAAAAAAAAAAAMFAAgAAAAAAAAQAAAAAAAAUA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Combat\CombatManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CombatUnit_ScriptableObject">
+    <Position X="30.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAARAAAAAAAEAAQAAAAAIgAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Combat\CombatUnit_ScriptableObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CombatWeapon_ScriptableObject">
+    <Position X="32.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgIARAAAAAAAEAAAAAAQAIAAAAAABAAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Combat\CombatWeapon_ScriptableObject1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CountdownTimer" Collapsed="true">
+    <Position X="16" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAACAEAgAAAAAAQgAAAAAACAAAAAAAAAgEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_WifeSoul.cs\CountdownTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyAnimator" Collapsed="true">
+    <Position X="6.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAGBAAAAgAAAAAAAABAAIAQAECBAACEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Enemy\EnemyAnimator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExampleSpline" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQEAAAAACAAMABAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\LeanTween\Examples\Scripts\PathSpline.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Floor" Collapsed="true">
+    <Position X="14.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAACAAAAEAAAAACAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Script_Floor\Floor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FloorExit" Collapsed="true">
+    <Position X="14.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAEAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Script_Floor\FloorExit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FloorManager" Collapsed="true">
+    <Position X="14.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAEAACAAABAAACEIAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Script_Floor\FloorManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Following" Collapsed="true">
+    <Position X="17.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYQAAAAACAIAUAAACAAAAgBQgAAQoAAABQAMiIgAAA=</HashCode>
+      <FileName>Assets\LeanTween\Examples\Scripts\Following.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FollowingTests" Collapsed="true">
+    <Position X="17.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACSEAAACADAAAECBAAAAAABRoAACAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Assets\LeanTween\Testing\FollowingTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="20" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIEAgAAAAAAAAAAAAAAAABQAAAAAACAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Manager\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GunWifeAnimations" Collapsed="true">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAIgAAAABACAAAAAAAggAAAAAAQIAAAABAAACEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_GunWife\GunWifeAnimations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HourGlass" Collapsed="true">
+    <Position X="16" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_WifeSoul.cs\HourGlass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundPlayer" Collapsed="true">
+    <Position X="36.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAASAAAAAAAAYAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Sound\SoundPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundSystem" Collapsed="true">
+    <Position X="36.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAQAAAQAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Sound\SoundSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WifeSoul">
+    <Position X="26.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABUAAAAQAAAAAAAAABAAABABAAAAAQCAACAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_WifeSoul.cs\WifeSoul.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player_DataHandler">
+    <Position X="28.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>uAQgQgIIAgEgygQEEAkFwIQLEoAiCCCIAPQBAaRACEQ=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Player\Player_DataHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerAnimations" Collapsed="true">
+    <Position X="4.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAEAAGBAAAAgAAAQAAACBAAIAQAADQAACFA=</HashCode>
+      <FileName>Assets\Scripts\Scripts_Player\PlayerAnimations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerMarker" Collapsed="true">
+    <Position X="28.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Units\GunWife\Player\PlayerMarker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GunAnimMovement" Collapsed="true">
+    <Position X="5.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAgAAEAAAAAAAAAAAAAAACAAIQ=</HashCode>
+      <FileName>Assets\Units\Library_Animations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayerAnimMovement" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAACAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Units\Library_Animations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
