@@ -161,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3663376502555858796
 Transform:
   m_ObjectHideFlags: 0
@@ -194,6 +194,9 @@ MonoBehaviour:
   inventory: []
   currentHitPoints: 0
   equippedWeapon: {fileID: 11400000, guid: 764a91d961c9d8f48b8a6a5ac0e668fa, type: 2}
+  OnDamageEffect:
+    m_PersistentCalls:
+      m_Calls: []
   idleAnimation: idle_Collector
   walkAnimation: walk_Collector
   initialCombatAnimation: attack_Collector

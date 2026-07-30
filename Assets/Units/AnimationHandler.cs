@@ -15,7 +15,7 @@ public class AnimationHandler : MonoBehaviour
     {
         if (currentState != animation)
         {
-            currentState = animation; ;
+            currentState = animation;
             animator.CrossFade(animation, crossfade);
         }
     }

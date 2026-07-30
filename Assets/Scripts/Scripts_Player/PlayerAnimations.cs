@@ -1,12 +1,15 @@
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private Player_DataHandler playerData;
-    [SerializeField] private GameObject playerObject; //Aran
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private AnimationHandler animationHandler;
+    private GameObject instanceCombo;
+    private float bufferCounter;
 
     void Awake()
     {
@@ -15,8 +18,16 @@ public class PlayerAnimations : MonoBehaviour
 
     void Update()
     {
+        if (playerData.comboIndex >= 1)
+        {
+            bufferCounter -= Time.deltaTime;
+            
+            if (bufferCounter <= 0f)
+                playerData.comboIndex = 1;
+        }
+            
         HandleAnimation();
-        FaceDirection();
+        Combat_Utils.FaceDirection(playerData.rb, playerData.transform);
     }
 
     private void HandleAnimation()
@@ -28,7 +39,7 @@ public class PlayerAnimations : MonoBehaviour
         if (playerData.isMelee)
         {
             comboState = "PlayerMelee" + combo;
-
+            Debug.Log("Running " + comboState);
             animationHandler.Play(comboState);
             return;
         }
@@ -58,21 +69,6 @@ public class PlayerAnimations : MonoBehaviour
         animationHandler.Play(PlayerAnimMovement.PlayerIdle);
     }
 
-    private void FaceDirection()
-    {
-        Vector3 localScale = transform.localScale;
-
-        if (playerData.rb.linearVelocity.x > 0f)
-        {
-            localScale.x = Mathf.Abs(localScale.x); // right
-        }
-        else if (playerData.rb.linearVelocity.x < 0f)
-        {
-            localScale.x = -Mathf.Abs(localScale.x); // left
-        }
-        base.transform.localScale = localScale;
-    }
-
     public void EndDodge() 
     {
         playerData.EndDodge();
@@ -80,6 +76,35 @@ public class PlayerAnimations : MonoBehaviour
 
     public void EndMelee()
     {
-        playerData.endMelee();
+        EndCombo();
+        playerData.EndMelee();
+      
+    }
+    
+    public void Begin_Combo()
+    {
+        
+    }
+
+    private void EndCombo()
+    {
+        Debug.Log("EndCombo");
+        bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
+        playerData.isMelee = false;
+    }
+    
+    private void DamageEffect()
+    {
+        StartCoroutine(playerData.SpriteHitEffect(spriteRenderer));
+    }
+    
+    private void OnEnable()
+    {
+        playerData.OnDamageEffect.AddListener(DamageEffect);
+    }
+
+    private void OnDisable()
+    {
+        playerData.OnDamageEffect.RemoveListener(DamageEffect);
     }
 }

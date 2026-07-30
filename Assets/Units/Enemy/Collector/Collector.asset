@@ -16,7 +16,7 @@ MonoBehaviour:
   Weapon: {fileID: 11400000, guid: 764a91d961c9d8f48b8a6a5ac0e668fa, type: 2}
   UnitName: The Collector
   UnitSerialNumber: U002
-  attackDamage: 3
+  attackDamage: 50
   attackSpeed: 0.7
   hitPoints: 20
   unitSpeed: 2.5

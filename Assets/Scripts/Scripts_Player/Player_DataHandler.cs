@@ -9,7 +9,7 @@ using UnityEngine.Windows;
 public class Player_DataHandler : CombatBase
 {
     [SerializeField] private GunWifeAnimations gunWifeAnimation;
-
+    
     private Vector2 savedDir = Vector2.zero; // last faced direction
     private bool sprintButtonDown = false; //check if sprint button is held down
 
@@ -17,6 +17,8 @@ public class Player_DataHandler : CombatBase
 
     [SerializeField] private float _dodgeSpeedMod = 30f;
     [SerializeField] private float _sprintSpeedMod = 40f;
+    [SerializeField] private float _lungeForce = 2f;
+    public GameObject instanceCombo;
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -67,7 +69,7 @@ public class Player_DataHandler : CombatBase
         set { _isDodging = value; }
         get { return _isDodging; }
     }
-    
+
     public bool isSprinting
     {
         set { _isSprinting = value; }
@@ -89,7 +91,7 @@ public class Player_DataHandler : CombatBase
         set { _canDodge = value; }
         get { return _canDodge; }
     }
-    
+
     public bool canSprint
     {
         set { _canSprint = value; }
@@ -152,11 +154,23 @@ public class Player_DataHandler : CombatBase
 
     private void OnEnable()
     {
+        if (gameInput == null)
+        {
+            Debug.LogError("Input System not Instantiated");
+            return;
+        }
+        
         gameInput.Enable();
     }
 
     private void OnDisable()
     {
+        if (gameInput == null)
+        {
+            Debug.LogError("Input System not Instantiated");
+            return;
+        }
+        
         gameInput.Disable();
     }
 
@@ -184,16 +198,15 @@ public class Player_DataHandler : CombatBase
             }
         }
 
-        //if (cooldownDodge > 0f)
-        //{
-        //    cooldownDodge -= Time.deltaTime;
-
-        //    if (cooldownDodge <= 0f)
-        //        cooldownDodge = 0f;
-        //}
-
-        //LungeOnAttack();
-
+        // if (cooldownDodge > 0f)
+        // {
+        //     cooldownDodge -= Time.deltaTime;
+        //
+        //     if (cooldownDodge <= 0f)
+        //         cooldownDodge = 0f;
+        // }
+        //
+        LungeOnAttack();
         InputSprint();
     }
 
@@ -214,7 +227,7 @@ public class Player_DataHandler : CombatBase
         Vector2 movement = moveInput.normalized;
         Vector2 velocity = Vector2.zero;
 
-        if (movement.magnitude > 1f)
+        if (movement.magnitude > 1f && _canMove)
             movement.Normalize();
 
         if (movement != Vector2.zero)
@@ -245,15 +258,18 @@ public class Player_DataHandler : CombatBase
 
     private void InputSprint() // also executes dash if able
     {
-        if (gameInput.Player.Dodge.IsPressed())
+        if (gameInput.Player.Dodge.IsPressed() && _canDodge)
         {
             _isSprinting = true;
-            if (canDodge && !sprintButtonDown) {  // only allow the dash once per sprint hold
+            if (canDodge && !sprintButtonDown)
+            {
+                // only allow the dash once per sprint hold
 
                 canDodge = false;
                 _isDodging = true;
                 StartCoroutine(Dodge());
             }
+
             sprintButtonDown = true;
         }
         else
@@ -270,15 +286,16 @@ public class Player_DataHandler : CombatBase
 
         Vector2 dashDirection = moveInput;
 
-        if (dashDirection == Vector2.zero)  // previous direction as fallback
+        if (dashDirection == Vector2.zero) // previous direction as fallback
         {
             dashDirection = savedDir;
         }
 
-        if (dashDirection == Vector2.zero)  // initial fallback
+        if (dashDirection == Vector2.zero) // initial fallback
         {
             dashDirection = Vector2.right;
         }
+
         _rb.linearVelocity = dashDirection.normalized * _dodgeSpeedMod; // burst movement from dash
 
         yield return null;
@@ -298,11 +315,15 @@ public class Player_DataHandler : CombatBase
         float shoot = gameInput.Player.Shoot.ReadValue<float>();
         float melee = gameInput.Player.Melee.ReadValue<float>();
 
-        if (shoot > 0f)
+        if (shoot > 0f && _canShoot)
             TryShoot();
 
-        if (melee > 0f)
+        if (melee > 0f && _canMelee)
+        {
+            Debug.Log("Melee Value:" + melee);
             Attack();
+        }
+            
     }
 
     private void TryShoot()
@@ -329,61 +350,72 @@ public class Player_DataHandler : CombatBase
         canShoot = true;
     }
 
-    public override void Attack()
+    protected override void Attack()
     {
-        base.Attack();
-
         if (!_canMelee || _isMelee)
         {
             Debug.Log("Cannot Melee Instance!");
-
             return;
         }
-        Debug.Log("Swing!");
-
-        //something about the combo timer here
-
-        _canMelee = false;
-
+        
+        //Logic
         _comboIndex++;
-
         if (_comboIndex > 3)
             _comboIndex = 1;
 
+        _canMelee = false;
         _isLunging = true;
         _isMelee = true;
-
-        StartCoroutine(Melee());
-
+        
         cooldownSwitch = baseCooldown / 2;
+        
+        BeginMelee();
+        Debug.Log("Melee Attack has been Instantiated!");
     }
 
-    //private void LungeOnAttack()
-    //{
-    //    Vector2 dir = //get direction of mouse 
-
-    //    // lunge override 
-    //    if (_isLunging)
-    //    {
-    //        _isLunging = false;
-
-    //        float lungeForce = 5;
-
-    //        _rb.linearVelocity = dir * lungeForce;
-    //        return;
-    //    }
-    //}
-
-    private IEnumerator Melee() // controls melee attack timing
+    private void LungeOnAttack()
     {
+        Vector2 dir = gunWifeAnimation.GetMouseDir();
+        if (_isLunging)
+        {
+            _isLunging = false;
+            _rb.linearVelocity = dir * _lungeForce;
+        }
+    }
+
+    private void BeginMelee()
+    {
+        InstantiateAttackObject();
+        
         _canMove = false;
         _canDodge = false;
         _isMelee = true;
-
-        yield return null;
+        
     }
 
-    public void endMelee()
+    private void InstantiateAttackObject()
+    {
+        if (instanceCombo != null)
+        {
+            Debug.Log("Combo already in progress. Ending current combo.");
+            return;
+        }
+        
+        GameObject c = Instantiate(equippedWeapon.attackList[comboIndex-1], transform.position + (equippedWeapon.offsetAttackList[comboIndex-1]), Quaternion.identity, transform);
+        instanceCombo = c;
+        Combat_Utils.FaceDirection(rb, transform);
+
+        AttackObject attackObject = c.GetComponent<AttackObject>();
+        if (attackObject != null)
+        {
+            attackObject.sourceUnit = this;
+            attackObject._fixedJoint.connectedBody = rb;  
+        }
+        
+        Debug.Log("Instantiated Attack Object");
+    }
+
+    public void EndMelee()
     {
         _canMove = true;
         _canDodge = true;
@@ -391,4 +423,28 @@ public class Player_DataHandler : CombatBase
         _isMelee = false;
     }
 
+    public override void OnReceiveDamage(CombatBase source, float damage)
+    {
+        OnDamageEffect.Invoke();
+        WifeSoul.instance.ReduceWifeSoul(damage, false, true);
+    }
+
+    protected override void OnDeath()
+    {
+       DisablePlayer();
+    }
+
+    public void DisablePlayer()
+    {
+        _canMove = false;
+        _canDodge = false;
+        _canShoot = false;
+        _canSprint = false;
+        _canMelee = false;
+        _isMoving = false;
+        _isSprinting = false;
+        _isDodging = false;
+        _isMelee = false;
+        _isShooting = false;
+    }
 }

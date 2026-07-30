@@ -55,7 +55,7 @@ public class GunWifeAnimations : MonoBehaviour
             animationHandler.Play(GunAnimMovement.GunWife_Attack_NW);
     }
     
-    public void GetMouseDir()
+    public Vector2 GetMouseDir()
     {
         mouseScreenPos = Mouse.current.position.value;
         mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
@@ -63,7 +63,10 @@ public class GunWifeAnimations : MonoBehaviour
         mouseDir = new Vector2(
             mousePosition.x - transform.position.x,
             mousePosition.y - transform.position.y);
+
+        return mouseDir;
     }
+
 
     public void OnEndShootAnim() => playerDataHandler.EndShoot();
 

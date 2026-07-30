@@ -26,7 +26,7 @@ public class AnimatedCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Mouse entered Ui");
+        Debug.Log("Mouse entered UI");
         isMouseOverUI = true;
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
     }
