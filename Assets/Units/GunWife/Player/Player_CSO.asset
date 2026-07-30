@@ -16,7 +16,7 @@ MonoBehaviour:
   Weapon: {fileID: 11400000, guid: d9a3bc57a1862664284d3663c14d6028, type: 2}
   UnitName: PlayerCharacter
   UnitSerialNumber: 000
-  attackDamage: 5
-  attackSpeed: 0.5
+  attackDamage: 2
+  attackSpeed: 1
   hitPoints: 3
   unitSpeed: 35

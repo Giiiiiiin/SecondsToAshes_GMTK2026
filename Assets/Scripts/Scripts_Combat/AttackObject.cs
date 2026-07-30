@@ -37,4 +37,10 @@ public class AttackObject : MonoBehaviour
             attackedUnits.Add(targetUnit);
         }
     }
+
+    public void OnEndAttack()
+    {
+        Destroy(gameObject);
+        Debug.Log("Destroyed Attack Object");
+    }
 }

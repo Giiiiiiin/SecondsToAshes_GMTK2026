@@ -10,7 +10,6 @@ public class PlayerAnimations : MonoBehaviour
     private AnimationHandler animationHandler;
     private GameObject instanceCombo;
     private float bufferCounter;
-    private int attackDirection;
 
     void Awake()
     {
@@ -19,7 +18,7 @@ public class PlayerAnimations : MonoBehaviour
 
     void Update()
     {
-        if (playerData.comboIndex >= 1 && instanceCombo != null)
+        if (playerData.comboIndex >= 1)
         {
             bufferCounter -= Time.deltaTime;
             
@@ -27,9 +26,8 @@ public class PlayerAnimations : MonoBehaviour
                 playerData.comboIndex = 1;
         }
             
-            
         HandleAnimation();
-        FaceDirection(base.gameObject);
+        Combat_Utils.FaceDirection(playerData.rb, playerData.transform);
     }
 
     private void HandleAnimation()
@@ -41,7 +39,7 @@ public class PlayerAnimations : MonoBehaviour
         if (playerData.isMelee)
         {
             comboState = "PlayerMelee" + combo;
-            
+            Debug.Log("Running " + comboState);
             animationHandler.Play(comboState);
             return;
         }
@@ -71,23 +69,6 @@ public class PlayerAnimations : MonoBehaviour
         animationHandler.Play(PlayerAnimMovement.PlayerIdle);
     }
 
-    private void FaceDirection(GameObject g)
-    {
-        Vector3 localScale = g.transform.localScale;
-
-        if (playerData.rb.linearVelocity.x > 0f)
-        {
-            localScale.x = Mathf.Abs(localScale.x); // right
-            attackDirection = 1;
-        }
-        else if (playerData.rb.linearVelocity.x < 0f)
-        {
-            localScale.x = -Mathf.Abs(localScale.x); // left
-            attackDirection = -1;
-        }
-        g.transform.localScale = localScale;
-    }
-
     public void EndDodge() 
     {
         playerData.EndDodge();
@@ -102,42 +83,13 @@ public class PlayerAnimations : MonoBehaviour
     
     public void Begin_Combo()
     {
-        Debug.Log("Begin_Combo");
-        if (instanceCombo != null)
-        {
-            Debug.Log("Combo already in progress. Ending current combo.");
-            return;
-        }
-
-        //Move these to playuerdatahandler
-        GameObject c = Instantiate(playerData.equippedWeapon.attackList[playerData.comboIndex-1], playerData.transform.position + (playerData.equippedWeapon.offsetAttackList[playerData.comboIndex-1] * attackDirection), Quaternion.identity, playerData.transform);
-        instanceCombo = c;
         
-        FaceDirection(c);
-
-        AttackObject attackObject = c.GetComponent<AttackObject>();
-        if (attackObject != null)
-        {
-            attackObject.sourceUnit = playerData;
-            attackObject._fixedJoint.connectedBody = playerData.GetComponent<Rigidbody2D>();  
-        }
-        
-        Debug.Log("Instantiated Attack Object");
     }
 
     private void EndCombo()
     {
         Debug.Log("EndCombo");
-        
-        //move these to playerdatahandler
-        if (instanceCombo != null)
-        {
-            instanceCombo.gameObject.SetActive(false);
-            Destroy(instanceCombo.gameObject);
-            
-            Debug.Log("Destroyed Attack");
-            bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
-        }
+        bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
         playerData.isMelee = false;
     }
     

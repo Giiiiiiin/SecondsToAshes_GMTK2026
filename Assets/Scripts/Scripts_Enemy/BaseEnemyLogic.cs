@@ -13,10 +13,12 @@ public class BaseEnemyLogic : CombatBase
     [SerializeField] private string idleAnimation;
     [SerializeField] private string walkAnimation;
     [SerializeField] private string initialCombatAnimation;
+    [SerializeField] private string deathAnimation;
 
     [SerializeField] private float circleAggroRadius = 3f;
     [SerializeField] private float circleAttackRadius = 1f;
-    private bool isAttacking = false;
+    private bool _isAttacking = false;
+    private bool _isDefeated = false;
 
     private Vector2 savedDir = Vector2.zero;
     private Vector2 targetDir;
@@ -28,8 +30,14 @@ public class BaseEnemyLogic : CombatBase
 
     public bool IsAttacking
     {
-        get { return isAttacking; }
-        set { isAttacking = value; }
+        get { return _isAttacking; }
+        set { _isAttacking = value; }
+    }
+    
+    public bool IsDefeated
+    {
+        get { return _isDefeated; }
+        set { _isDefeated = value; }
     }
     public float AttackBuffer
     {
@@ -56,11 +64,17 @@ public class BaseEnemyLogic : CombatBase
         float speed = combatData.unitSpeed;
         float distance = targetDir.magnitude;
 
+        if (_isDefeated)
+        {
+            OnDeath();
+            return;
+        }
+        
         if (distance > circleAggroRadius)
         {
             rb.linearVelocity = Vector2.zero;
 
-            isAttacking = false;
+            _isAttacking = false;
 
             if (idleAnimation != null && idleAnimation != "")
                 animationHandler.Play(idleAnimation);
@@ -76,11 +90,11 @@ public class BaseEnemyLogic : CombatBase
             if (rb.linearVelocity != Vector2.zero)
                 savedDir = rb.linearVelocity; 
 
-            if (walkAnimation != null && walkAnimation != "" && !isAttacking)
+            if (walkAnimation != null && walkAnimation != "" && !_isAttacking)
                 animationHandler.Play(walkAnimation);
         }
 
-        FaceDirection();
+        Combat_Utils.FaceDirection(rb, transform);
 
         if (distance <= circleAttackRadius)
         {
@@ -89,22 +103,7 @@ public class BaseEnemyLogic : CombatBase
             Attack();
         }
     }
-
-    private void FaceDirection()
-    {
-        Vector3 localScale = transform.localScale;
-
-        if (rb.linearVelocity.x > 0f)
-        {
-            localScale.x = Mathf.Abs(localScale.x); // right
-        }
-        else if (rb.linearVelocity.x < 0f)
-        {
-            localScale.x = -Mathf.Abs(localScale.x); // left
-        }
-        base.transform.localScale = localScale;
-    }
-
+    
     public void AddCooldown()
     {
         float addCooldown = Mathf.Max(0f, 1 / combatData.attackSpeed);
@@ -118,7 +117,7 @@ public class BaseEnemyLogic : CombatBase
         if (attackCooldown > 0f)
             return;
 
-        isAttacking = true;
+        _isAttacking = true;
         if (initialCombatAnimation != null && initialCombatAnimation != "")
         {
             animationHandler.Play(initialCombatAnimation); 
@@ -133,19 +132,30 @@ public class BaseEnemyLogic : CombatBase
     {
         if (source.GetComponent<PlayerMarker>() == null) return;
         
-        currentHitPoints = targetHitPoints;
+        currentHitPoints -= targetHitPoints;
         OnDamageEffect.Invoke();
-        
+
         if (currentHitPoints <= 0)
-            OnDeath();
+            _isDefeated = true;
     }
 
     protected override void OnDeath()
     {
-        if (CombatManager.Instance == null)
-            Debug.LogError("CombatManager not found!");
-            
         CombatManager.Instance.OnEnemyDeath();
-        Destroy(gameObject);
+        DisableEnemyMovement();
+        animationHandler.Play(deathAnimation);
+    }
+
+    private void DisableEnemyMovement()
+    {
+        _isAttacking = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        GetComponent<Collider2D>().isTrigger = true;
+    }
+    
+    public void RemoveFromField()
+    {
+        gameObject.SetActive(false);
     }
 }

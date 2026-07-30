@@ -23,7 +23,7 @@ public class CombatManager : MonoBehaviour
 
     private float CalculateDamage(CombatBase sourceUnit, CombatBase targetUnit)
     {
-        float damage = sourceUnit.UnitData.attackDamage - targetUnit.currentHitPoints;
+        float damage = sourceUnit.UnitData.attackDamage;
         return Mathf.Max(damage, 0);
     }
 

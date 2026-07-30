@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5936105421e93e4e885db4962c1f906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackObject
+  destroyOnHit: 0
   sourceUnit: {fileID: 0}
   _fixedJoint: {fileID: 0}
 --- !u!255 &4365091263899709478

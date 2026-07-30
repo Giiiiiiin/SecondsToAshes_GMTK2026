@@ -18,6 +18,7 @@ public class Player_DataHandler : CombatBase
     [SerializeField] private float _dodgeSpeedMod = 30f;
     [SerializeField] private float _sprintSpeedMod = 40f;
     [SerializeField] private float _lungeForce = 2f;
+    public GameObject instanceCombo;
 
     private InputSystem_Action gameInput;
     private Vector2 moveInput;
@@ -318,7 +319,11 @@ public class Player_DataHandler : CombatBase
             TryShoot();
 
         if (melee > 0f && _canMelee)
+        {
+            Debug.Log("Melee Value:" + melee);
             Attack();
+        }
+            
     }
 
     private void TryShoot()
@@ -380,11 +385,34 @@ public class Player_DataHandler : CombatBase
 
     private void BeginMelee()
     {
+        InstantiateAttackObject();
+        
         _canMove = false;
         _canDodge = false;
         _isMelee = true;
         
-        //should move the attack object instantiation here instead
+    }
+
+    private void InstantiateAttackObject()
+    {
+        if (instanceCombo != null)
+        {
+            Debug.Log("Combo already in progress. Ending current combo.");
+            return;
+        }
+        
+        GameObject c = Instantiate(equippedWeapon.attackList[comboIndex-1], transform.position + (equippedWeapon.offsetAttackList[comboIndex-1]), Quaternion.identity, transform);
+        instanceCombo = c;
+        Combat_Utils.FaceDirection(rb, transform);
+
+        AttackObject attackObject = c.GetComponent<AttackObject>();
+        if (attackObject != null)
+        {
+            attackObject.sourceUnit = this;
+            attackObject._fixedJoint.connectedBody = rb;  
+        }
+        
+        Debug.Log("Instantiated Attack Object");
     }
 
     public void EndMelee()

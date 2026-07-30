@@ -107,7 +107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimator
   enemyLogic: {fileID: 89763888511013013}
-  spriteRenderer: {fileID: 7871470504327605632}
   attachJoint: 1
   comboAnimations: []
 --- !u!114 &3278430263288741814
@@ -162,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3769574402400801599
 Transform:
   m_ObjectHideFlags: 0
@@ -201,6 +200,7 @@ MonoBehaviour:
   idleAnimation: idle_Cultist
   walkAnimation: walk_Cultist
   initialCombatAnimation: attack_Cultist
+  deathAnimation: death_Cultist
   circleAggroRadius: 3
   circleAttackRadius: 1
 --- !u!61 &5008291732362276335

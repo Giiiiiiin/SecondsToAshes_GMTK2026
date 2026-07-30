@@ -83,6 +83,28 @@ public class EnemyAnimator : MonoBehaviour
         enemyLogic.SpriteHitEffect(spriteRenderer);
     }
     
+    
+    //TEMPORARY
+    public void OnDeathAnim()
+    {
+        Color colorFade = Color.black; 
+        colorFade.a = 0; 
+        
+        LeanTween.value(gameObject, ChangeAlpha, Color.black, colorFade, 4f)
+            .setEaseOutElastic().setDelay(1f).setOnComplete(() => enemyLogic.RemoveFromField());
+    }
+
+    private void EndDeathAnim()
+    {
+        //Delay the removal of the carcass;
+        //LeanTween.delayedCall(5f, () => enemyLogic.RemoveFromField());
+    }
+
+    private void ChangeAlpha(Color color)
+    {
+        spriteRenderer.color = color;
+    }
+    
     private void OnEnable()
     {
         enemyLogic.OnDamageEffect.AddListener(DamageEffect);
