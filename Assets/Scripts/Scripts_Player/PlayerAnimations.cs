@@ -1,77 +1,110 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 
 public class PlayerAnimations : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private Player_DataHandler playerData;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
     private AnimationHandler animationHandler;
-
-    Vector2 mouseScreenPos;
-    Vector3 mousePosition;
-    Vector2 mouseDir;
-
-    float cooldownMelee;
+    private GameObject instanceCombo;
+    private float bufferCounter;
 
     void Awake()
     {
-        cooldownMelee = 0;
-
         animationHandler = GetComponent<AnimationHandler>();
-    }
-
-    private void Start()
-    {
-        animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
     }
 
     void Update()
     {
-        mouseScreenPos = Mouse.current.position.value;
-        mousePosition = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-
-        mouseDir = new Vector2(
-            mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y);
-
-        if (cooldownMelee > 0f)
+        if (playerData.comboIndex >= 1)
         {
-            cooldownMelee -= Time.deltaTime;
-
-            if (cooldownMelee <= 0f)
-            {
-                cooldownMelee = 0f;
-            }
+            bufferCounter -= Time.deltaTime;
+            
+            if (bufferCounter <= 0f)
+                playerData.comboIndex = 1;
         }
-
-        if (playerMovement.isMelee)
-        {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_SW);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMelee_NE);
-
-            return;
-        }
-
-        if (playerMovement.isMoving)
-        {
-            if (mouseDir.x > 0)
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_SW);
-            else
-                animationHandler.Play(PlayerAnimMovement.PlayerMove_NE);
-
-            return;
-        }
-
-        if (mouseDir.x > 0)
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_SW);
-        else
-            animationHandler.Play(PlayerAnimMovement.PlayerIdle_NE);
+            
+        HandleAnimation();
+        Combat_Utils.FaceDirection(playerData.rb, playerData.transform);
     }
 
-    public void Melee(float seconds)
+    private void HandleAnimation()
     {
-        cooldownMelee += seconds / 5;
+        int combo = playerData.comboIndex;
+        string comboState;
+
+        //melee attack
+        if (playerData.isMelee)
+        {
+            comboState = "PlayerMelee" + combo;
+            Debug.Log("Running " + comboState);
+            animationHandler.Play(comboState);
+            return;
+        }
+
+        //dodge
+        if (playerData.isDodging)
+        {
+            animationHandler.Play(PlayerAnimMovement.PlayerDodge);
+            return;
+        }
+
+        //sprint
+        if (playerData.isMoving && playerData.isSprinting)
+        {
+            animationHandler.Play(PlayerAnimMovement.PlayerSprint);
+            return;
+        }
+
+        //walk
+        if (playerData.isMoving)
+        {
+            animationHandler.Play(PlayerAnimMovement.PlayerWalk);
+            return;
+        }
+
+        //idle (fallback)
+        animationHandler.Play(PlayerAnimMovement.PlayerIdle);
+    }
+
+    public void EndDodge() 
+    {
+        playerData.EndDodge();
+    }
+
+    public void EndMelee()
+    {
+        EndCombo();
+        playerData.EndMelee();
+      
+    }
+    
+    public void Begin_Combo()
+    {
+        
+    }
+
+    private void EndCombo()
+    {
+        Debug.Log("EndCombo");
+        bufferCounter = playerData.equippedWeapon.attackBufferList[playerData.comboIndex-1];
+        playerData.isMelee = false;
+    }
+    
+    private void DamageEffect()
+    {
+        StartCoroutine(playerData.SpriteHitEffect(spriteRenderer));
+    }
+    
+    private void OnEnable()
+    {
+        playerData.OnDamageEffect.AddListener(DamageEffect);
+    }
+
+    private void OnDisable()
+    {
+        playerData.OnDamageEffect.RemoveListener(DamageEffect);
     }
 }

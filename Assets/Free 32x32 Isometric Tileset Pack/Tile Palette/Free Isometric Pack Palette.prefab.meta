@@ -1,15 +1,3 @@
-fileFormatVersion: 2
-guid: d01bbee922504fa4788b8b259471116c
-PrefabImporter:
-  externalObjects: {}
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 317119
-  packageName: 32x32 Isometric Tileset Pack
-  packageVersion: 1.0
-  assetPath: Assets/Free 32x32 Isometric Tileset Pack/Tile Palette/Free Isometric
-    Pack Palette.prefab
-  uploadId: 756637
+version https://git-lfs.github.com/spec/v1
+oid sha256:222a5aea7507b0e1d96dda291ccf194c3a02a4c5248fdc8237abe3fe005fbd3e
+size 401

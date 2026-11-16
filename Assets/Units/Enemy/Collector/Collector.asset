@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edb110373519862479aaef1a330dcf5f, type: 3}
+  m_Name: Collector
+  m_EditorClassIdentifier: Assembly-CSharp::CombatUnit_ScriptableObject
+  Source: {fileID: 0}
+  Weapon: {fileID: 11400000, guid: 764a91d961c9d8f48b8a6a5ac0e668fa, type: 2}
+  UnitName: The Collector
+  UnitSerialNumber: U002
+  attackDamage: 50
+  attackSpeed: 0.7
+  hitPoints: 20
+  unitSpeed: 2.5
